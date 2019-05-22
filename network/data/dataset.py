@@ -9,8 +9,9 @@ from torch.utils import data
 from utils import DBHelper as db
 
 
-def pretreatment():
-    classes = [os.path.join("./raw/", file) for file in os.listdir("./raw/")]
+def pretreatment(classes=None):
+    if not classes:
+        classes = [os.path.join("./raw/", file) for file in os.listdir("./raw/")]
     helper = db()
     conn = helper.get_con()
     for cls in classes:
@@ -63,7 +64,7 @@ class DataFlow(data.Dataset):
         else:
             self.files = files[int(0.9 * files_num):]
 
-        self.label_map = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "skype": 4}
+        self.label_map = opt.classes_dict
         # {"ssl": 0, "ssh": 1, "smtp": 2, "http": 3, "gvsp": 4, "ftp": 5, "dns": 6, "skype": 7,"wow": 8, "pop3": 9}
 
     def __getitem__(self, index):
@@ -77,7 +78,7 @@ class DataFlow(data.Dataset):
 
 
 if __name__ == '__main__':
-    # pretreatment()
+    # pretreatment(["./raw/ftp.pcapng"])
     h = db()
     conn = h.get_con(False)
     files = h.get_files(conn)

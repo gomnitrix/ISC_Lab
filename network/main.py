@@ -176,6 +176,6 @@ def help():
 
 
 if __name__ == '__main__':
-    train(lr=0.3, batch_size=128, model='IdentNet', max_epoch=15, num_workers=6,
+    train(lr=0.4, batch_size=32, model='IdentNet', max_epoch=15, num_workers=6,
           load_model_path='.\checkpoints\\IdentNet_0522_00_52_45.pth')
 # test(model='AlexNet',num_workers=1,batch_size=128,load_model_path='.\checkpoints\\AlexNet(SGD_DROPOUT)_1204_23_19_38.pth')
