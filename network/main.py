@@ -1,15 +1,14 @@
-from config import opt
-import models
-from torch.utils.data import DataLoader
-from torch.autograd import Variable
-from utils import Visualizer
-from data import DataFlow
-import torch.nn as nn
-from torch.nn import functional as F
+import fire
 import torch
+import torch.nn as nn
+from torch.autograd import Variable
+from torch.utils.data import DataLoader
 from torchnet import meter
-import os
-from tqdm import tqdm
+
+import models
+from config import opt
+from data import DataFlow
+from utils import Visualizer
 
 
 def test(**kwargs):
@@ -105,10 +104,6 @@ def train(**kwargs):
             if ii % opt.print_freq == 0:
                 vis.plot('loss', loss_meter.value()[0])
 
-                if os.path.exists(opt.debug_file):
-                    import ipdb
-                    ipdb.set_trace()
-
         model.save()
         val_cm, val_accuracy = val(model, val_loader)
 
@@ -176,6 +171,5 @@ def help():
 
 
 if __name__ == '__main__':
-    train(lr=0.4, batch_size=32, model='IdentNet', max_epoch=15, num_workers=6,
-          load_model_path='.\checkpoints\\IdentNet_0522_00_52_45.pth')
-# test(model='AlexNet',num_workers=1,batch_size=128,load_model_path='.\checkpoints\\AlexNet(SGD_DROPOUT)_1204_23_19_38.pth')
+    fire.Fire()
+    # train(lr=0.3, batch_size=64, max_epoch=15,load_model_path='.\checkpoints\\IdentNet_0522_15_34_03.pth')

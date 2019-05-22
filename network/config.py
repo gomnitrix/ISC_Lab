@@ -3,28 +3,28 @@ import warnings
 
 class DefaultConfig(object):
     env = 'default'
-    model = 'AlexNet'
+    model = 'IdentNet'
 
     raw_data_root = './data/raw'
-    train_data_root = '.\data\\train'
-    test_data_root = '.\data\\test'
+    train_data_root = './data/train'
+    test_data_root = './data/test'
     load_model_path = ''  # './checkpoints/model.pth'
 
-    batch_size = 128
+    batch_size = 32
     use_gpu = False
     num_workers = 5
     print_freq = 10
 
-    debug_file = '\\tmp\debug'
-    result_file = '.\checkpoints\\result.csv'
+    result_file = './checkpoints/result.csv'
 
     max_epoch = 10
-    lr = 0.1
+    lr = 0.2
     lr_decay = 0.85
     weight_decay = 1e-4
 
     cates = 5
     classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4}
+
 
 def parse(self, kwargs):
     for k, v in kwargs.items():
