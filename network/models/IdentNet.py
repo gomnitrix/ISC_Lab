@@ -1,11 +1,12 @@
 from .BasicModel import BasicModel
 from torch import nn
+from config import opt
 from torch.nn.functional import softmax
 import torchvision.models as models
 
 
 class IdentNet(BasicModel):
-    def __init__(self, num_classes=10):
+    def __init__(self, num_classes=opt.cates):
         super(IdentNet, self).__init__()
         self.model_name = 'IdentNet'
         self.features = nn.Sequential(

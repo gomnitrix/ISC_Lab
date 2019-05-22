@@ -60,13 +60,13 @@ def train(**kwargs):
         train_data,
         opt.batch_size,
         shuffle=True,
-        num_workers=opt.num_workers
+        # num_workers=opt.num_workers
     )
     val_loader = DataLoader(
         val_data,
         opt.batch_size,
         shuffle=False,
-        num_workers=opt.num_workers
+        # num_workers=opt.num_workers
     )
     criterion = nn.CrossEntropyLoss()
     lr = opt.lr
@@ -78,7 +78,7 @@ def train(**kwargs):
 
     # step4
     loss_meter = meter.AverageValueMeter()
-    confusion_matrix = meter.ConfusionMeter(10)
+    confusion_matrix = meter.ConfusionMeter(opt.cates)
     previous_loss = 1e5
 
     # training
@@ -125,11 +125,13 @@ def train(**kwargs):
                 param_group['lr'] = lr
 
         previous_loss = loss_meter.value()[0]
+    train_data.conn.close()
+    val_data.conn.close()
 
 
 def val(model, dataloader):
     model.eval()
-    confusion_matrix = meter.ConfusionMeter(10)
+    confusion_matrix = meter.ConfusionMeter(opt.cates)
     for ii, data in enumerate(dataloader):
         input, label = data
         with torch.no_grad():
@@ -143,7 +145,7 @@ def val(model, dataloader):
 
     model.train()
     cm_value = confusion_matrix.value()
-    num = sum([cm_value[x][x] for x in range(10)])
+    num = sum([cm_value[x][x] for x in range(opt.cates)])
     accuracy = 100 * num / (cm_value.sum())
 
     return confusion_matrix, accuracy
@@ -174,5 +176,6 @@ def help():
 
 
 if __name__ == '__main__':
-    train(lr=0.005, batch_size=32, model='IdentNet', max_epoch=10, num_workers=5)
+    train(lr=0.3, batch_size=128, model='IdentNet', max_epoch=15, num_workers=6,
+          load_model_path='.\checkpoints\\IdentNet_0522_00_52_45.pth')
 # test(model='AlexNet',num_workers=1,batch_size=128,load_model_path='.\checkpoints\\AlexNet(SGD_DROPOUT)_1204_23_19_38.pth')

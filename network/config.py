@@ -13,7 +13,7 @@ class DefaultConfig(object):
     batch_size = 128
     use_gpu = False
     num_workers = 5
-    print_freq = 20
+    print_freq = 10
 
     debug_file = '\\tmp\debug'
     result_file = '.\checkpoints\\result.csv'
@@ -23,6 +23,7 @@ class DefaultConfig(object):
     lr_decay = 0.85
     weight_decay = 1e-4
 
+    cates = 5
 
 def parse(self, kwargs):
     for k, v in kwargs.items():

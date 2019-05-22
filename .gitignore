@@ -1,0 +1,4 @@
+.idea/
+venv
+*.pcapng
+__pycache__/
