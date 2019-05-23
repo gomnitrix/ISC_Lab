@@ -1,17 +1,17 @@
-import os
-
 import numpy as np
-import torch
 from scapy.all import *
-from config import opt
 from scapy.utils import PcapReader
 from torch.utils import data
+
+from config import opt
 from utils import DBHelper as db
 
 
 def pretreatment(classes=None):
     if not classes:
-        classes = [os.path.join("./raw/", file) for file in os.listdir("./raw/")]
+        classes = [
+            os.path.join("./raw/", file) for file in os.listdir("./raw/")
+        ]
     helper = db()
     conn = helper.get_con()
     for cls in classes:

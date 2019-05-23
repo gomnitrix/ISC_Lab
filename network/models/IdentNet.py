@@ -1,8 +1,8 @@
-from .BasicModel import BasicModel
 from torch import nn
-from config import opt
 from torch.nn.functional import softmax
-import torchvision.models as models
+
+from config import opt
+from .BasicModel import BasicModel
 
 
 class IdentNet(BasicModel):

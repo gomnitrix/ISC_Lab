@@ -1,6 +1,7 @@
-import visdom
 import time
+
 import numpy as np
+import visdom
 
 
 class Visualizer(object):

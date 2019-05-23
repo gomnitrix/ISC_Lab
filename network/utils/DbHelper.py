@@ -18,7 +18,7 @@ class DBHelper:
         }
         if not if_dict:
             config['cursorclass'] = pymysql.cursors.Cursor
-        '''获取操作数据库的curcor即游标，首先的建立连接，需要服务器地址，端口号，用户名，密码和数据库名'''
+
         conn = pymysql.connect(**config)
         return conn
 
