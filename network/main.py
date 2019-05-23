@@ -1,13 +1,12 @@
 import fire
 import torch
 import torch.nn as nn
-from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from torchnet import meter
 
 import models
 from config import opt
-from data import DataFlow
+from data import DataFlow, TrainDataFlow
 from utils import Visualizer
 
 
@@ -15,12 +14,13 @@ def test(**kwargs):
     opt.parse(kwargs)
 
     # data
-    test_data = DataFlow(opt.test_data_root, train=False, test=True)
-    test_loader = DataLoader(test_data,
-                             batch_size=opt.batch_size,
-                             shuffle=False,
-                             num_workers=opt.num_workers)
-
+    test_data = TrainDataFlow()
+    test_loader = DataLoader(
+        test_data,
+        batch_size=opt.batch_size,
+        shuffle=False,
+        # num_workers=opt.num_workers
+    )
     results = []
 
     # model
@@ -31,16 +31,12 @@ def test(**kwargs):
         model = model.cuda()
 
     for ii, (data, path) in enumerate(test_loader):
-        input = Variable(data)
+        input_data = torch.tensor(data)
         if opt.use_gpu:
-            input = input.cuda()
-        pred = model(input)
+            input_data = input_data.cuda()
+        pred = model(input_data)
         label = pred.max(dim=1)[1].data.tolist()
-        batch_result = [(path, label) for path, label in zip(path, label)]
-        results.extend(batch_result)
-
-    results = sorted(results, key=lambda x: x[0])
-    write_csv(results, opt.result_file)
+        results.append(label)
     return results
 
 
@@ -56,8 +52,8 @@ def train(**kwargs):
         model.cuda()
 
     # data
-    train_data = DataFlow(opt.train_data_root, train=True)
-    val_data = DataFlow(opt.train_data_root, train=False, test=False)
+    train_data = DataFlow(train=True)
+    val_data = DataFlow(train=False)
     train_loader = DataLoader(
         train_data,
         opt.batch_size,
@@ -87,8 +83,8 @@ def train(**kwargs):
         confusion_matrix.reset()
 
         for ii, (x, y) in enumerate(train_loader):
-            data = Variable(x)
-            label = Variable(y)
+            data = torch.tensor(x)
+            label = torch.tensor(y)
             if opt.use_gpu:
                 data = data.cuda()
                 label = label.cuda()
@@ -100,7 +96,7 @@ def train(**kwargs):
             optimizer.step()
 
             loss_meter.add(loss.item())
-            confusion_matrix.add(out.data, label.data)
+            confusion_matrix.add(out.data, label.detach())
 
             if ii % opt.print_freq == 0:
                 vis.plot('loss', loss_meter.value()[0])
@@ -130,10 +126,10 @@ def val(model, dataloader):
     model.eval()
     confusion_matrix = meter.ConfusionMeter(opt.cates)
     for ii, data in enumerate(dataloader):
-        input, label = data
+        input_data, label = data
         with torch.no_grad():
-            val_input = Variable(input)
-            val_label = Variable(label.long())
+            val_input = torch.tensor(input_data)
+            val_label = torch.tensor(label.long())
         if opt.use_gpu:
             val_input = val_input.cuda()
             val_label = val_label.cuda()
@@ -157,7 +153,7 @@ def write_csv(results, file):
         f.close()
 
 
-def help():
+def myhelp():
     print('''
         usage : python file.py <function> [--args=value]
         <function> := train | test | help

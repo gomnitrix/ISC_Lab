@@ -13,7 +13,10 @@ class BasicModel(nn.Module):
         if path and self.model_name.startswith('AlexNet'):
             pretrain_dict = torch.load(path)
             alex_dict = self.state_dict()
-            pretrain_dict = {k: v for k, v in pretrain_dict.items() if k in alex_dict}
+            pretrain_dict = {
+                k: v
+                for k, v in pretrain_dict.items() if k in alex_dict
+            }
             alex_dict.update(pretrain_dict)
             self.load_state_dict(alex_dict)
             return

@@ -1,51 +1,16 @@
+import time
+
 import numpy as np
-from scapy.all import *
-from scapy.utils import PcapReader
 from torch.utils import data
 
+from catch_package.catch_packet import Queue
 from config import opt
-from utils import DBHelper as db
-
-
-def pretreatment(classes=None):
-    if not classes:
-        classes = [
-            os.path.join("./raw/", file) for file in os.listdir("./raw/")
-        ]
-    helper = db()
-    conn = helper.get_con()
-    for cls in classes:
-        with PcapReader(cls) as reader:
-            idx = 1
-            file_prefix = cls.split("/")[-1].split(".")[0] + "_"
-            for item in reader:
-                if 'TCP' in item:
-                    load = item['TCP']
-                elif 'UDP' in item:
-                    load = item['UDP']
-                else:
-                    load = item['IPv6']
-                load = bytes(load)[:1024]
-                length = len(load)
-                temp = []
-                for i in range(length):
-                    temp.append(load[i])
-                length = len(temp)
-                temp.extend([0] * (1024 - length))
-                formed_array = (np.array(temp, dtype='f')).reshape((1, 32, 32))
-                amin, amax = formed_array.min(), formed_array.max()
-                formed_array = (formed_array - amin) / (amax - amin)
-                name = file_prefix + str(idx)
-                helper.write_data(name, formed_array.tostring(), conn)
-                idx += 1
-                if idx >= 7000:
-                    break
+from utils import DBHelper as Db
 
 
 class DataFlow(data.Dataset):
-    def __init__(self, root, train=True, test=False):
-        self.test = test
-        self.db_helper = db()
+    def __init__(self, train=True):
+        self.db_helper = Db()
         self.conn = self.db_helper.get_con(False)
         files = self.db_helper.get_files(self.conn)
         files = [x[0] for x in files]
@@ -57,15 +22,12 @@ class DataFlow(data.Dataset):
         np.random.seed(100)
         np.random.shuffle(files)
 
-        if self.test:
-            self.files = files
-        elif train:
+        if train:
             self.files = files[:int(0.9 * files_num)]
         else:
             self.files = files[int(0.9 * files_num):]
 
         self.label_map = opt.classes_dict
-        # {"ssl": 0, "ssh": 1, "smtp": 2, "http": 3, "gvsp": 4, "ftp": 5, "dns": 6, "skype": 7,"wow": 8, "pop3": 9}
 
     def __getitem__(self, index):
         file = self.files[index]
@@ -77,12 +39,15 @@ class DataFlow(data.Dataset):
         return len(self.files)
 
 
-if __name__ == '__main__':
-    # pretreatment(["./raw/ftp.pcapng"])
-    h = db()
-    conn = h.get_con(False)
-    files = h.get_files(conn)
-    print(len(files))
-    data = h.read_data(files[0][0], conn)
-    print(data)
-    print(data.shape)
+class TrainDataFlow(data.Dataset):
+    def __init__(self):
+        self.queue = Queue
+
+    def __getitem__(self, index):
+        if self.queue.empty():
+            print("empty!!")
+            time.sleep(3)
+        return self.queue.get(), "test"
+
+    def __len__(self):
+        return self.queue.qsize()

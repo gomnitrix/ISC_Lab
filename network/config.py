@@ -8,7 +8,7 @@ class DefaultConfig(object):
     raw_data_root = './data/raw'
     train_data_root = './data/train'
     test_data_root = './data/test'
-    load_model_path = ''  # './checkpoints/model.pth'
+    load_model_path = 'C:/Users/omnitrix/PycharmProjects/IC_Secu/network/checkpoints/IdentNet_0522_21_59_26.pth'
 
     batch_size = 32
     use_gpu = False
