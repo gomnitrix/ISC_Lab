@@ -16,7 +16,10 @@ def test(**kwargs):
 
     # data
     test_data = DataFlow(opt.test_data_root, train=False, test=True)
-    test_loader = DataLoader(test_data, batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers)
+    test_loader = DataLoader(test_data,
+                             batch_size=opt.batch_size,
+                             shuffle=False,
+                             num_workers=opt.num_workers)
 
     results = []
 
@@ -69,11 +72,9 @@ def train(**kwargs):
     )
     criterion = nn.CrossEntropyLoss()
     lr = opt.lr
-    optimizer = torch.optim.SGD(
-        model.parameters(),
-        lr,
-        weight_decay=opt.weight_decay
-    )
+    optimizer = torch.optim.SGD(model.parameters(),
+                                lr,
+                                weight_decay=opt.weight_decay)
 
     # step4
     loss_meter = meter.AverageValueMeter()
@@ -109,11 +110,12 @@ def train(**kwargs):
 
         vis.plot('val_accuracy', val_accuracy)
         vis.log(
-            'epoch:{epoch},lr:{lr},loss:{loss},train_cm:{train_cm},val_cm:{val_cm}'.format(
-                epoch=epoch, loss=loss_meter.value()[0], val_cm=str(val_cm.value()),
-                train_cm=str(confusion_matrix.value()), lr=lr
-            )
-        )
+            'epoch:{epoch},lr:{lr},loss:{loss},train_cm:{train_cm},val_cm:{val_cm}'
+            .format(epoch=epoch,
+                    loss=loss_meter.value()[0],
+                    val_cm=str(val_cm.value()),
+                    train_cm=str(confusion_matrix.value()),
+                    lr=lr))
         if loss_meter.value()[0] > previous_loss:
             lr = lr * opt.lr_decay
             for param_group in optimizer.param_groups:

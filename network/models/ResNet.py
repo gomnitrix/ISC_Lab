@@ -1,8 +1,7 @@
-from .BasicModel import BasicModel as BasicModule
-
 from torch import nn
-
 from torch.nn import functional as F
+
+from .BasicModel import BasicModel as BasicModule
 
 
 class ResidualBlock(nn.Module):

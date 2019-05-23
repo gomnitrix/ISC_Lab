@@ -1,6 +1,6 @@
-from .BasicModel import BasicModel
 from torch import nn
-import torchvision.models as models
+
+from .BasicModel import BasicModel
 
 
 class AlexNet(BasicModel):
