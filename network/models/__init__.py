@@ -1,3 +1,2 @@
-from .AlexNet import AlexNet
-from .ResNet import ResNet34
 from .IdentNet import IdentNet
+from .Encrypted_IdentNet import EncIdentNet
