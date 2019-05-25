@@ -1,5 +1,4 @@
 from torch import nn
-from torch.nn.functional import softmax
 
 from config import opt
 from .BasicModel import BasicModel
@@ -29,5 +28,5 @@ class IdentNet(BasicModel):
         x = self.features(x)
         x = x.view(x.size(0), 12544)
         x = self.classifier(x)
-        x = softmax(x, dim=1)
+        # x = softmax(x, dim=1)
         return x

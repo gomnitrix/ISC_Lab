@@ -30,8 +30,7 @@ def test(**kwargs):
     if opt.use_gpu:
         model = model.cuda()
 
-    for ii, (data, path) in enumerate(test_loader):
-        input_data = torch.tensor(data)
+    for ii, (input_data, path) in enumerate(test_loader):
         if opt.use_gpu:
             input_data = input_data.cuda()
         pred = model(input_data)
@@ -82,9 +81,7 @@ def train(**kwargs):
         loss_meter.reset()
         confusion_matrix.reset()
 
-        for ii, (x, y) in enumerate(train_loader):
-            data = torch.tensor(x)
-            label = torch.tensor(y)
+        for ii, (data, label) in enumerate(train_loader):
             if opt.use_gpu:
                 data = data.cuda()
                 label = label.cuda()
@@ -107,11 +104,11 @@ def train(**kwargs):
         vis.plot('val_accuracy', val_accuracy)
         vis.log(
             'epoch:{epoch},lr:{lr},loss:{loss},train_cm:{train_cm},val_cm:{val_cm}'
-            .format(epoch=epoch,
-                    loss=loss_meter.value()[0],
-                    val_cm=str(val_cm.value()),
-                    train_cm=str(confusion_matrix.value()),
-                    lr=lr))
+                .format(epoch=epoch,
+                        loss=loss_meter.value()[0],
+                        val_cm=str(val_cm.value()),
+                        train_cm=str(confusion_matrix.value()),
+                        lr=lr))
         if loss_meter.value()[0] > previous_loss:
             lr = lr * opt.lr_decay
             for param_group in optimizer.param_groups:
@@ -126,15 +123,13 @@ def val(model, dataloader):
     model.eval()
     confusion_matrix = meter.ConfusionMeter(opt.cates)
     for ii, data in enumerate(dataloader):
-        input_data, label = data
         with torch.no_grad():
-            val_input = torch.tensor(input_data)
-            val_label = torch.tensor(label.long())
+            val_input, val_label = data
         if opt.use_gpu:
             val_input = val_input.cuda()
             val_label = val_label.cuda()
         out = model(val_input)
-        confusion_matrix.add(out.data.squeeze(), label.long())
+        confusion_matrix.add(out.data.squeeze(), val_label.long())
 
     model.train()
     cm_value = confusion_matrix.value()
@@ -142,15 +137,6 @@ def val(model, dataloader):
     accuracy = 100 * num / (cm_value.sum())
 
     return confusion_matrix, accuracy
-
-
-def write_csv(results, file):
-    import csv
-    with open(file, 'w') as f:
-        writer = csv.writer(f)
-        writer.writerow(['id', 'label'])
-        writer.writerows(results)
-        f.close()
 
 
 def myhelp():
@@ -170,4 +156,4 @@ def myhelp():
 
 if __name__ == '__main__':
     fire.Fire()
-    # train(lr=0.3, batch_size=64, max_epoch=15,load_model_path='.\checkpoints\\IdentNet_0522_15_34_03.pth')
+    # train(lr=0.05, batch_size=64, max_epoch=15,load_model_path='.\checkpoints\\IdentNet_0522_15_34_03.pth')

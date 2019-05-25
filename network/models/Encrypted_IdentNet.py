@@ -1,5 +1,4 @@
 from torch import nn
-from torch.nn.functional import softmax
 
 from config import opt
 from .BasicModel import BasicModel
@@ -35,5 +34,4 @@ class EncIdentNet(BasicModel):
         x = self.features(x)
         x = x.view(x.size(0), 2048)
         x = self.classifier(x)
-        x = softmax(x, dim=1)
         return x
