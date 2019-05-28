@@ -34,8 +34,13 @@ def test(**kwargs):
         if opt.use_gpu:
             input_data = input_data.cuda()
         pred = model(input_data)
-        label = pred.max(dim=1)[1].data.tolist()
-        results.append(label)
+        max_pre = pred.max(dim=1)
+        probability = max_pre[0]
+        label = max_pre[1].data.tolist()
+        for i in range(len(probability)):
+            if probability[i] < 7:
+                label[i] = opt.cates
+        results.extend(label)
     return results
 
 

@@ -6,11 +6,13 @@ from network.config import opt
 def forecast():
     results = []
     pretation = []
-    cates = {val: key for key, val in opt.cates.items()}
+    cates = {val: key for key, val in opt.classes_dict.items()}
+    cates[opt.cates] = "unknow"
     for i in range(5):
         results.extend(main.test())
     while results:
         pretation.append(cates[results.pop(0)])
+    print(pretation)
 
 
 def message_share():
