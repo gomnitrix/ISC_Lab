@@ -24,6 +24,7 @@ class DefaultConfig(object):
 
     cates = 5
     classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4}
+    threshold = 7
 
 
 def parse(self, kwargs):

@@ -12,12 +12,9 @@ def get_netcard():
     result = ''
     info = psutil.net_if_addrs()
     for k, v in info.items():
-
         for item in v:
-
             if item[0] == 2 and "172" in item[1]:
                 result = k
-
     return result
 
 

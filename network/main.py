@@ -38,7 +38,7 @@ def test(**kwargs):
         probability = max_pre[0]
         label = max_pre[1].data.tolist()
         for i in range(len(probability)):
-            if probability[i] < 7:
+            if probability[i] < opt.threshold:
                 label[i] = opt.cates
         results.extend(label)
     return results
