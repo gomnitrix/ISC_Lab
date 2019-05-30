@@ -10,31 +10,44 @@ cond = threading.Condition()
 
 def get_netcard():
     result = ''
+
     info = psutil.net_if_addrs()
     for k, v in info.items():
+
         for item in v:
+
             if item[0] == 2 and "172" in item[1]:
                 result = k
+
     return result
 
 
 def packet_load(package):
     with cond:
-
+        #print(package.show())
         try:
             load = []
             proto = package['IP'].proto
+            src = package['IP'].src
+            dst = package['IP'].dst
+            sport = ''
+            dport = ''
             if proto == 6:
                 load = package['TCP'].payload
-
+                sport = package['TCP'].sport
+                dport = package['TCP'].dport
             elif proto == 17:
                 load = package['UDP'].payload
+                sport = package['UDP'].sport
+                dport = package['UDP'].dport
 
         except IndexError:
-            try:
-                load = package['IPv6'].payload
-            except IndexError:
-                print(" ")
+            # try:
+            #     load = package['IPv6'].payload
+            #     # src = package['IPv6'].src
+            #     # dst = package['IPv6'].dst
+            # except IndexError:
+                return
 
         if len(load) > 0:
             int_ = [int(x) for x in bytes(load)]
@@ -46,7 +59,10 @@ def packet_load(package):
             if img.any():
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
-                Queue.put(formed_array)
+                data = (formed_array,proto,src,dst,sport,dport)
+                # print(data)
+                Queue.put(data)
+
 
                 cond.notifyAll()
 
@@ -58,4 +74,6 @@ def catch_packet():
 
 if __name__ == '__main__':
     t1 = threading.Thread(target=catch_packet)
+   # t2 = threading.Thread(target=catch_packet)
     t1.start()
+   # t2.start()
