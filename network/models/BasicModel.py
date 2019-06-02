@@ -24,7 +24,11 @@ class BasicModel(nn.Module):
 
     def save(self, name=None):
 <<<<<<< HEAD
+<<<<<<< HEAD
         prefix = '/home/ljw/PycharmProjects/lsc/network/checkpoints'
+=======
+        prefix = 'C:/Users/omnitrix/PycharmProjects/IC_Secu/network/checkpoints/'
+>>>>>>> c6aecf92fcadd19d9fa78c7d01491ae148a31389
 =======
         prefix = 'C:/Users/omnitrix/PycharmProjects/IC_Secu/network/checkpoints/'
 >>>>>>> c6aecf92fcadd19d9fa78c7d01491ae148a31389
