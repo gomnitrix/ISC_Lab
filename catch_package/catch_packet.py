@@ -3,7 +3,7 @@ import queue
 import numpy as np
 import psutil
 from scapy.all import *
-
+from catch_package.send_rst import send_rst
 Queue = queue.Queue()
 cond = threading.Condition()
 
@@ -60,16 +60,15 @@ def packet_load(package):
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
                 data = (formed_array,proto,src,dst,sport,dport)
-                # print(data)
+                print(data)
+
                 Queue.put(data)
-
-
                 cond.notifyAll()
 
 
 def catch_packet():
     dev = get_netcard()
-    sniff(iface=dev, prn=packet_load, count=0)
+    sniff(iface=dev, prn=packet_load, count=0,filter="tcp")
 
 
 if __name__ == '__main__':

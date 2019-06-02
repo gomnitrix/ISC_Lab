@@ -23,7 +23,7 @@ class BasicModel(nn.Module):
         self.load_state_dict(torch.load(path))
 
     def save(self, name=None):
-        prefix = 'C:/Users/omnitrix/PycharmProjects/IC_Secu/network/checkpoints/'
+        prefix = '/home/ljw/PycharmProjects/lsc/network/checkpoints'
         if not name:
             prefix = prefix + self.model_name + '_'
         else:
