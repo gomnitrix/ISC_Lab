@@ -56,15 +56,14 @@ def packet_load(package):
                 formed_array = (img - amin) / (amax - amin)
                 if not np.any(np.isnan(formed_array)):
                     data = (formed_array, proto, src, dst, sport, dport)
-                    print(data)
                     Queue.put(data)
                     cond.notifyAll()
 
 
-def catch_packet():
+def catch_packet(count):
     dev = get_netcard()
 
-    sniff(iface=dev, prn=packet_load, count=0, filter="tcp")
+    sniff(iface=dev, prn=packet_load, count=count, filter="tcp")
 
 
 if __name__ == '__main__':

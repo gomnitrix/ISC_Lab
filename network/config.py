@@ -30,6 +30,7 @@ class DefaultConfig(object):
     threshold = 7
 
     if_print = True
+    capture_num = 100
 
     def parse(self, kwargs):
         for k, v in kwargs.items():
