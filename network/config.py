@@ -25,7 +25,7 @@ class DefaultConfig(object):
     lr_decay = 0.85
     weight_decay = 1e-4
 
-    classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4,"mysql":5}
+    classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4, "mysql": 5}
     cates = len(classes_dict)
     threshold = 7
 
