@@ -1,4 +1,7 @@
 import warnings
+import os
+
+root_path = os.path.dirname(__file__)
 
 
 class DefaultConfig(object):
@@ -8,7 +11,7 @@ class DefaultConfig(object):
     raw_data_root = './data/raw'
     train_data_root = './data/train'
     test_data_root = './data/test'
-    load_model_path = 'C:/Users/omnitrix/PycharmProjects/IC_Secu/network/checkpoints/IdentNet_0522_21_59_26.pth'
+    load_model_path = root_path + '/checkpoints/IdentNet_0603_11_04_37.pth'
 
     batch_size = 32
     use_gpu = False
@@ -22,23 +25,22 @@ class DefaultConfig(object):
     lr_decay = 0.85
     weight_decay = 1e-4
 
-    cates = 5
-    classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4}
+    classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4,"mysql":5}
+    cates = len(classes_dict)
     threshold = 7
 
+    if_print = True
 
-def parse(self, kwargs):
-    for k, v in kwargs.items():
-        if not hasattr(self, k):
-            warnings.warn('warning:DefualtConfig has no attribut %s' % k)
-        setattr(self, k, v)
+    def parse(self, kwargs):
+        for k, v in kwargs.items():
+            if not hasattr(self, k):
+                warnings.warn('warning:DefualtConfig has no attribut %s' % k)
+            setattr(self, k, v)
 
-    print('user config:')
-    for k, v in self.__class__.__dict__.items():
-        if not k.startswith('__'):
-            print(k, getattr(self, k))
+        print('user config:')
+        for k, v in self.__class__.__dict__.items():
+            if not k.startswith('__') and self.if_print:
+                print(k, getattr(self, k))
 
 
-DefaultConfig.parse = parse
 opt = DefaultConfig()
-# opt.parse=parse

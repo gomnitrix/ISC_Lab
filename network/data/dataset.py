@@ -39,7 +39,7 @@ class DataFlow(data.Dataset):
         return len(self.files)
 
 
-class TrainDataFlow(data.Dataset):
+class TestDataFlow(data.Dataset):
     def __init__(self):
         self.queue = Queue
 

@@ -5,16 +5,17 @@ from torch.utils.data import DataLoader
 from torchnet import meter
 
 import models
-from config import opt
-from data import DataFlow, TrainDataFlow
+from config import opt, root_path
+from data import DataFlow, TestDataFlow
 from utils import Visualizer
 
 
 def test(**kwargs):
     opt.parse(kwargs)
+    opt.if_print = False
 
     # data
-    test_data = TrainDataFlow()
+    test_data = TestDataFlow()
     test_loader = DataLoader(
         test_data,
         batch_size=opt.batch_size,
@@ -114,7 +115,7 @@ def train(**kwargs):
                         val_cm=str(val_cm.value()),
                         train_cm=str(confusion_matrix.value()),
                         lr=lr))
-        if loss_meter.value()[0] > previous_loss:
+        if loss_meter.value()[0] > previous_loss * 0.95:
             lr = lr * opt.lr_decay
             for param_group in optimizer.param_groups:
                 param_group['lr'] = lr
@@ -161,4 +162,4 @@ def myhelp():
 
 if __name__ == '__main__':
     fire.Fire()
-    # train(lr=0.05, batch_size=64, max_epoch=15,load_model_path='.\checkpoints\\IdentNet_0522_15_34_03.pth')
+    # train(lr=0.3, batch_size=128, max_epoch=15, print_freq=5,load_model_path=root_path + "\checkpoints\IdentNet_0604_16_03_24.pth")
