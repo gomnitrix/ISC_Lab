@@ -3,8 +3,7 @@ import queue
 import numpy as np
 import psutil
 from scapy.all import *
-from catch_package.send_rst import theard_send_rst
-
+import threading
 Queue = queue.Queue()
 packet_Queue = queue.Queue()
 cond = threading.Condition()
@@ -12,8 +11,6 @@ cond = threading.Condition()
 
 def get_netcard():
     result = ''
-
-
 
     info = psutil.net_if_addrs()
     for k, v in info.items():
@@ -26,10 +23,7 @@ def get_netcard():
 
 def packet_load(package):
     with cond:
-
-        #print(package.show())
         try:
-            load = []
             proto = package['IP'].proto
             src = package['IP'].src
             dst = package['IP'].dst
@@ -50,11 +44,9 @@ def packet_load(package):
             #     # src = package['IPv6'].src
             #     # dst = package['IPv6'].dst
             # except IndexError:
-                return
-
+            return
 
         if len(load) > 0:
-
 
             int_ = [int(x) for x in bytes(load)]
 
@@ -73,15 +65,17 @@ def packet_load(package):
                 cond.notifyAll()
 
 
+
 def catch_packet():
     dev = get_netcard()
 
     sniff(iface=dev, prn=packet_load, count=0)
 
 
-
 if __name__ == '__main__':
     t1 = threading.Thread(target=catch_packet)
+
    # t2 = threading.Thread(target=catch_packet)
     t1.start()
    # t2.start()
+

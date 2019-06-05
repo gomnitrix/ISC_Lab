@@ -3,7 +3,7 @@ import time
 import numpy as np
 from torch.utils import data
 
-from catch_package.catch_packet import Queue
+from back_end.catch_package import Queue
 from config import opt
 from utils import DBHelper as Db
 
@@ -39,7 +39,7 @@ class DataFlow(data.Dataset):
         return len(self.files)
 
 
-class TrainDataFlow(data.Dataset):
+class TestDataFlow(data.Dataset):
     def __init__(self):
         self.queue = Queue
 

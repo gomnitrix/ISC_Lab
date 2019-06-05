@@ -6,8 +6,11 @@ dst = ''
 sport = ''
 dport = ''
 
-def signal_handler(signal,frame):
+
+def signal_handler(signal, frame):
     os._exit(0)
+
+
 def recv_packet(pktdata):
     print(pktdata.show())
     if pktdata['IP'].proto == 6 and pktdata['TCP']:
@@ -25,6 +28,7 @@ def sniff_recv():
     sniff(prn = recv_packet,store = 0,filter=flt)
     return
 
+
 def send_rst(data):
     print("start")
     global src
@@ -37,6 +41,7 @@ def send_rst(data):
     dport = data[5]
     #signal.signal(signal.SIGINT,signal_handler)
     t1 = threading.Thread(target=sniff_recv)
+    # signal.signal(signal.SIGINT,signal_handler)
     t1.start()
     time.sleep(1)
     print("send")
