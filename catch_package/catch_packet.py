@@ -3,9 +3,10 @@ import queue
 import numpy as np
 import psutil
 from scapy.all import *
-from catch_package.send_rst import send_rst
+from catch_package.send_rst import theard_send_rst
 
 Queue = queue.Queue()
+packet_Queue = queue.Queue()
 cond = threading.Condition()
 
 
@@ -53,7 +54,10 @@ def packet_load(package):
 
 
         if len(load) > 0:
+
+
             int_ = [int(x) for x in bytes(load)]
+
             if len(int_) < 1024:
                 int_.extend([0] * (1024 - len(int_)))
             else:
@@ -62,23 +66,22 @@ def packet_load(package):
             if img.any():
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
-                data = (formed_array,proto,src,dst,sport,dport)
-                print(data)
-                Queue.put(data)
+                data = (proto,src,dst,sport,dport,str(load))
+
+                Queue.put(formed_array)
+                packet_Queue.put(data)
                 cond.notifyAll()
 
 
 def catch_packet():
     dev = get_netcard()
 
-    sniff(iface=dev, prn=packet_load, count=0,filter="tcp")
+    sniff(iface=dev, prn=packet_load, count=0)
 
 
 
 if __name__ == '__main__':
     t1 = threading.Thread(target=catch_packet)
-
    # t2 = threading.Thread(target=catch_packet)
     t1.start()
    # t2.start()
-
