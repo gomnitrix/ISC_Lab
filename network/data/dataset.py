@@ -3,9 +3,9 @@ import time
 import numpy as np
 from torch.utils import data
 
-from back_end.catch_package import Queue
-from config import opt
-from utils import DBHelper as Db
+from catch_package.catch_pkt import Queue
+from network.config import opt
+from network.utils import DBHelper as Db
 
 
 class DataFlow(data.Dataset):
@@ -47,7 +47,7 @@ class TestDataFlow(data.Dataset):
         if self.queue.empty():
             print("empty!!")
             time.sleep(3)
-        return self.queue.get()[0], "test"
+        return self.queue.get(), "test"
 
     def __len__(self):
         return self.queue.qsize()

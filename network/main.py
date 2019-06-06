@@ -4,10 +4,10 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchnet import meter
 
-import models
-from config import opt
-from data import DataFlow, TestDataFlow
-from utils import Visualizer
+from network import models
+from network.config import opt
+from network.data import DataFlow, TestDataFlow
+from network.utils import Visualizer
 
 
 def test(**kwargs):

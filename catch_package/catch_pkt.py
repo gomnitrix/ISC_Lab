@@ -15,13 +15,14 @@ def get_netcard():
     info = psutil.net_if_addrs()
     for k, v in info.items():
         for item in v:
-            if item[0] == 2 and "172" in item[1]:
+            if item[0] == 2 and "192" in item[1]:
                 result = k
 
     return result
 
 
 def packet_load(package):
+    load = ''
     with cond:
         try:
             proto = package['IP'].proto
@@ -58,7 +59,7 @@ def packet_load(package):
             if img.any():
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
-                data = (proto,src,dst,sport,dport,str(load))
+                data = (proto,src,dst,sport,dport,load)
 
                 Queue.put(formed_array)
                 packet_Queue.put(data)
@@ -66,16 +67,9 @@ def packet_load(package):
 
 
 
-def catch_packet():
+def catch_packet(num):
     dev = get_netcard()
+    sniff(iface=dev, prn=packet_load, count=num)
 
-    sniff(iface=dev, prn=packet_load, count=0)
 
-
-if __name__ == '__main__':
-    t1 = threading.Thread(target=catch_packet)
-
-   # t2 = threading.Thread(target=catch_packet)
-    t1.start()
-   # t2.start()
 

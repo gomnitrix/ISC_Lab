@@ -11,7 +11,7 @@ class DefaultConfig(object):
     raw_data_root = './data/raw'
     train_data_root = './data/train'
     test_data_root = './data/test'
-    load_model_path = root_path + '/checkpoints/IdentNet_0603_11_04_37.pth'
+    load_model_path = root_path + '/checkpoints/IdentNet_0604_16_03_24.pth'
 
     batch_size = 32
     use_gpu = False
@@ -38,7 +38,7 @@ class DefaultConfig(object):
                 warnings.warn('warning:DefualtConfig has no attribut %s' % k)
             setattr(self, k, v)
 
-        print('user config:')
+        #print('user config:')
         for k, v in self.__class__.__dict__.items():
             if not k.startswith('__') and self.if_print:
                 print(k, getattr(self, k))

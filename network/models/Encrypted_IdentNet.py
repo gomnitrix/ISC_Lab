@@ -1,6 +1,6 @@
 from torch import nn
 
-from config import opt
+from network.config import opt
 from .BasicModel import BasicModel
 
 
