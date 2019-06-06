@@ -1,0 +1,106 @@
+					<div class="col-md-6 weather-grid">
+						<div class="main-info">
+							<div class="weather-top">
+								<div class="weather-grids">
+									<h3 class="fri">Friday </h3>
+									<h3>Weather</h3>
+								</div>
+								<div class="weather-grids weather-mdl">
+									<canvas id="clear-day" width="70" height="70"></canvas>
+								</div>
+								<div class="weather-grids">
+									<h4>Max 27°</h4>
+									<h2>21°C</h2>
+									<h4>Min 10°</h4>
+								</div>
+								<div class="clearfix"> </div>
+							</div>
+							<div class="weather-bottom">
+								<ul>
+									<li class="bg">
+										<h4>FRI</h4>
+										<figure class="icons">
+											<canvas id="clear-night" width="40" height="40"></canvas>
+										</figure>
+										<h5>27°C</h5>
+										<h6>17°C</h6>
+									</li>
+									<li>
+										<h4>SAT</h4>
+										<figure class="icons">
+											<canvas id="partly-cloudy-day" width="40" height="40"></canvas>
+										</figure>
+										<h5>20°C</h5>
+										<h6>15°C</h6>
+									</li>
+									<li class="bg">
+										<h4>SUN</h4>
+										<figure class="icons">
+											<canvas id="cloudy" width="40" height="40"></canvas>
+										</figure>
+										<h5>18°C</h5>
+										<h6>12°C</h6>
+									</li>
+									<li>
+										<h4>MON</h4>
+										<figure class="icons">
+											<canvas id="sleet" width="40" height="40"></canvas>
+										</figure>
+										<h5>17°C</h5>
+										<h6>12°C</h6>
+									</li>
+									<li class="bg">
+										<h4>TUE</h4>
+										<figure class="icons">
+											<canvas id="rain" width="40" height="40"></canvas>
+										</figure>
+										<h5>17°C</h5>
+										<h6>10°C</h6>
+									</li>
+									<li>
+										<h4>WED</h4>
+										<figure class="icons">
+											<canvas id="snow" width="40" height="40"></canvas>
+										</figure>
+										<h5>24°C</h5>
+										<h6>10°C</h6>
+									</li>
+									<li class="bg">
+										<h4>THR</h4>
+										<figure class="icons">
+											<canvas id="wind" width="40" height="40"></canvas>
+										</figure>
+										<h5>25°C</h5>
+										<h6>15°C</h6>
+									</li>
+								</ul>
+								<div class="clearfix"> </div>
+							</div>
+							<script>
+								var icons = new Skycons({ "color": "#68b828" }),
+									list = [
+										"clear-day"
+									],
+									i;
+
+								for (i = list.length; i--;)
+									icons.set(list[i], list[i]);
+
+								icons.play();
+							</script>
+							<script>
+								var icons = new Skycons({ "color": "#f7aa47" }),
+									list = [
+										"clear-night", "partly-cloudy-day",
+										"partly-cloudy-night", "cloudy", "rain", "sleet", "snow", "wind",
+										"fog"
+									],
+									i;
+
+								for (i = list.length; i--;)
+									icons.set(list[i], list[i]);
+
+								icons.play();
+							</script>
+						</div>
+					</div>
