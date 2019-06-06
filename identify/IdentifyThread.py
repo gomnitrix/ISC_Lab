@@ -1,8 +1,8 @@
 import threading
 import queue
-from network import main
-from network.config import opt
-from catch_package.catch_packet import catch_packet
+import main
+from config import opt
+from back_end.catch_package import catch_packet
 
 net1_pretation = queue.Queue()
 

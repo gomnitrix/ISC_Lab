@@ -5,7 +5,7 @@ from torch.utils.data import DataLoader
 from torchnet import meter
 
 import models
-from config import opt, root_path
+from config import opt
 from data import DataFlow, TestDataFlow
 from utils import Visualizer
 

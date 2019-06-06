@@ -3,8 +3,9 @@ import queue
 import numpy as np
 import psutil
 from scapy.all import *
-
+import threading
 Queue = queue.Queue()
+packet_Queue = queue.Queue()
 cond = threading.Condition()
 
 
@@ -46,26 +47,35 @@ def packet_load(package):
             return
 
         if len(load) > 0:
-            load = bytes(load)[:1024]
-            length = len(load)
-            temp = [load[i] for i in range(length)]
-            temp.extend([0] * (1024 - length))
-            img = np.array(temp, dtype='f').reshape((1, 32, 32))
+
+            int_ = [int(x) for x in bytes(load)]
+
+            if len(int_) < 1024:
+                int_.extend([0] * (1024 - len(int_)))
+            else:
+                int_ = int_[0:1024]
+            img = np.array(int_, dtype='f').reshape((1, 32, 32))
             if img.any():
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
-                if not np.any(np.isnan(formed_array)):
-                    data = (formed_array, proto, src, dst, sport, dport)
-                    Queue.put(data)
-                    cond.notifyAll()
+                data = (proto,src,dst,sport,dport,str(load))
+
+                Queue.put(formed_array)
+                packet_Queue.put(data)
+                cond.notifyAll()
 
 
-def catch_packet(count):
+
+def catch_packet():
     dev = get_netcard()
 
-    sniff(iface=dev, prn=packet_load, count=count, filter="tcp")
+    sniff(iface=dev, prn=packet_load, count=0)
 
 
 if __name__ == '__main__':
     t1 = threading.Thread(target=catch_packet)
+
+   # t2 = threading.Thread(target=catch_packet)
     t1.start()
+   # t2.start()
+

@@ -1,4 +1,4 @@
-from .IdentifyThread import CaptureThread, Net1Thread
+from back_end.identify import CaptureThread, Net1Thread
 
 thread_list = []
 

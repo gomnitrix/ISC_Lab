@@ -3,7 +3,7 @@ import time
 import numpy as np
 from torch.utils import data
 
-from catch_package.catch_packet import Queue
+from back_end.catch_package import Queue
 from config import opt
 from utils import DBHelper as Db
 
@@ -47,7 +47,7 @@ class TestDataFlow(data.Dataset):
         if self.queue.empty():
             print("empty!!")
             time.sleep(3)
-        return self.queue.get(), "test"
+        return self.queue.get()[0], "test"
 
     def __len__(self):
         return self.queue.qsize()
