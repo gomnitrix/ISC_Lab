@@ -3,15 +3,15 @@
 
 <head>
 	<title>Home</title>
-     {% load staticfiles %}
-	<link rel="stylesheet" href="{% static 'dist/amazeui.min.css' %}" >
-	<link rel="stylesheet" href="{% static 'demo.css' %}" >
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'dist/amazeui.min.css' %}">
+	<link rel="stylesheet" href="{% static 'demo.css' %}">
 	<script
 		type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<!-- Bootstrap Core CSS -->
-	<link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css' >
+	<link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css'>
 	<!-- Custom CSS -->
-	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' >
+	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css'>
 	<!-- font CSS -->
 	<!-- font-awesome icons -->
 	<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
@@ -33,7 +33,10 @@
 	<script src="{% static 'js/jquery.sparkline.min.js' %}"></script>
 	<script src="{% static 'js/Chart.js' %}"></script>
 	<script src="{% static 'js/watch.js' %}"></script>
-
+	<script async language="JavaScript">
+		window.data = [0, 0, 0, 0, 0, 0];
+	</script>
+	<script src="{% static 'js/sidebar.js' %}"></script>
 </head>
 
 <body class="cbp-spmenu-push cbp-spmenu-push-toright">
@@ -56,54 +59,11 @@
 								<a href="inputs.html"><i class="fa fa-cogs nav_icon"></i>Setting</a>
 							</li>
 							<li>
-								<div><button type="button" id="Botton" onclick="start()" class="fa fa-check-square-o nav_icon" >start</button></div>
-								<!--这里写开始方法的地址，下面那个写停止的-->
-                                 <script async language="JavaScript">
-                                 window.data = [0,0,0,0,0,0];
-								 function get_data()
-								 {
-								 	   $.ajax({
-                                    type: "GET",
-                                    url: "./proto", //后台处理函数的url
-
-
-						            success:function (result) { //获取后台处理后传过来的result
-                								data = result.data;
-
-                								},
-
-                					});
-								 }
-                                function start(){
-                                    $.ajax({
-                                    type: "GET",
-                                    url: "./start", //后台处理函数的url
-
-						            success:function (result) { //获取后台处理后传过来的result
-                								data = result.info;
-                								},
-                					});
-                                     setInterval(function(){get_data()},3000);
-								}
-								 </script>
+								<a class="Operation" onclick="start()"><i
+										class="fa fa-check-square-o nav_icon"></i>Start</a>
 							</li>
 							<li>
-								<div><button type="button" id="Botton2" onclick="stop()" class="fa fa-bar-chart nav_icon" >Stop</button></div>
-
-								     <script language="JavaScript">
-                                function stop(){
-
-
-                                    $.ajax({
-                                    type: "GET",
-                                    url: "./stop", //后台处理函数的url
-
-						            success:function (result) { //获取后台处理后传过来的result
-                								data = result.info;
-                								},
-                					});
-								}
-								 </script>
+								<a class="Operation" onclick="stop()"><i class="fa fa-bar-chart nav_icon"></i>Stop</a>
 							</li>
 
 						</ul>
@@ -220,33 +180,33 @@
 
 							<script async language="JavaScript">
 
-                            function show(){
+								function show() {
 
-							var barChartData = {
-                                    animation: false,
-									labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
-									datasets: [
-										{
+									var barChartData = {
+										animation: false,
+										labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
+										datasets: [
+											{
 
-											data: data ,/*这里传变量*/
-											backgroundColor: [
-											'rgba(255, 99, 132, 0.6)',
-											'rgba(54, 162, 235, 0.6)',
-											'rgba(255, 206, 86, 0.6)',
-											'rgba(75, 192, 192, 0.6)',
-											'rgba(153, 102, 255, 0.6)',
-											'rgba(255, 159, 64, 0.6)']
-										}
+												data: data,/*这里传变量*/
+												backgroundColor: [
+													'rgba(255, 99, 132, 0.6)',
+													'rgba(54, 162, 235, 0.6)',
+													'rgba(255, 206, 86, 0.6)',
+													'rgba(75, 192, 192, 0.6)',
+													'rgba(153, 102, 255, 0.6)',
+													'rgba(255, 159, 64, 0.6)']
+											}
 
-									]
-								};
-							var options = {
-							  animation:false
-							}
-								new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData,options);
+										]
+									};
+									var options = {
+										animation: false
+									}
+									new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData, options);
 
-                            }
-                          setInterval(function(){show()},1000);
+								}
+								setInterval(function () { show() }, 1000);
 
 							</script>
 						</div>
