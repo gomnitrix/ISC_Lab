@@ -3,36 +3,35 @@
 
 <head>
 	<title>Home</title>
-	<link rel="icon" type="image/png" href="dist/i/favicon.png">
-	<link rel="apple-touch-icon-precomposed" href="dist/i/app-icon72x72@2x.png">
-	<link rel="stylesheet" href="dist/amazeui.min.css" />
-	<link rel="stylesheet" href="demo.css" />
+     {% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'dist/amazeui.min.css' %}" >
+	<link rel="stylesheet" href="{% static 'demo.css' %}" >
 	<script
 		type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<!-- Bootstrap Core CSS -->
-	<link href="css/bootstrap.css" rel='stylesheet' type='text/css' />
+	<link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css' >
 	<!-- Custom CSS -->
-	<link href="css/style.css" rel='stylesheet' type='text/css' />
+	<link href="{% static 'css/style.css' %}" rel='stylesheet' type='text/css' >
 	<!-- font CSS -->
 	<!-- font-awesome icons -->
-	<link href="css/font-awesome.css" rel="stylesheet">
+	<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
 	<!-- //font-awesome icons -->
 	<!--skycons-icons-->
-	<script src="js/skycons.js"></script>
+	<script src="{% static 'js/skycons.js' %}"></script>
 	<!--//skycons-icons-->
 
 	<!-- js-->
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/bootstrap.js"></script>
-	<script src="js/modernizr.custom.js"></script>
+	<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.js' %}"></script>
+	<script src="{% static 'js/modernizr.custom.js' %}"></script>
 	<!-- Metis Menu -->
-	<script src="js/metisMenu.min.js"></script>
-	<script src="js/custom.js"></script>
-	<link href="css/custom.css" rel="stylesheet">
+	<script src="{% static 'js/metisMenu.min.js' %}"></script>
+	<script src="{% static 'js/custom.js' %}"></script>
+	<link href="{% static 'css/custom.css' %}" rel="stylesheet">
 	<!--//Metis Menu -->
-	<link href="css/jquerysctipttop.css" rel="stylesheet" type="text/css">
-	<script src="js/jquery.sparkline.min.js"></script>
-	<script src="js/Chart.js"></script>
+	<link href="{% static 'css/jquerysctipttop.css' %}" rel="stylesheet" type="text/css">
+	<script src="{% static 'js/jquery.sparkline.min.js' %}"></script>
+	<script src="{% static 'js/Chart.js' %}"></script>
 
 </head>
 
@@ -123,7 +122,7 @@
 		</div>
 		<!-- //header-ends -->
 
-		<!--{% block content %}       这里需要取消注释-->
+
 		<div id="page-wrapper" style="min-height: 703px;">
 			<div class="main-page">
 				<div class="four-grids">
@@ -181,24 +180,49 @@
 								<canvas id="sleet" width="20" height="20"></canvas>
 							</figure>
 							<canvas id="bar1" height="390" width="1093" style="width: 875px; height: 312px;"></canvas>
-							<script>
+							<div><button type="button" id="testBotton" onclick="DO()" >start</button></div>
+							<script language="JavaScript">
+							  var data = [0,0,0,0,0,0]
+							var barChartData = {
+									labels: ["SSL", "SSH", "HTTP", "FTP", "DNS", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
+									datasets: [
+										{
+											fillColor: "#7c38bc",
+											strokeColor: "#7c38bc",
+											data: data /*这里传变量*/
+										}
+									]
+
+								};
+								new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData);
+
+                                function DO(){
+
+
+                                    $.ajax({
+                                    type: "GET",
+                                    url: "../proto", //后台处理函数的url
+
+						            success:function (result) { //获取后台处理后传过来的result
+                								data = result.data;
+
+                								},
+                					});
+
+
 								var barChartData = {
 									labels: ["SSL", "SSH", "HTTP", "FTP", "DNS", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
 									datasets: [
 										{
 											fillColor: "#7c38bc",
 											strokeColor: "#7c38bc",
-											data: [25, 40, 50, 65, 55, 30] /*这里传变量*/
-										},
-										{
-											fillColor: "#7c38bc",
-											strokeColor: "#7c38bc",
-											data: [30, 45, 55, 70, 40, 25] /*这里传变量*/
+											data: data /*这里传变量*/
 										}
 									]
 
 								};
 								new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData);
+								}
 							</script>
 						</div>
 					</div>
@@ -246,22 +270,22 @@
 					</div>
 				</div>
 		</div>
-		<!--{% block content %}         这里需要取消注释-->
+
 
 		<div class="copy-section">
 			<p>Copyright © 2019.ICS Lab, All rights reserved. Author:高博为 </p>
 		</div>
 	</div>
-	<script src="dist/jquery.min.js"></script>
-	<script src="dist/amazeui.min.js"></script>
-	<script src="dist/echarts.min.js"></script>
-	<script src="dist/t3.min.js"></script>
-	<script src="demo.min.js"></script>
+	<script src="{% static 'dist/jquery.min.js' %}"></script>
+	<script src="{% static 'dist/amazeui.min.js' %}"></script>
+	<script src="{% static 'dist/echarts.min.js' %}"></script>
+	<script src="{% static 'dist/t3.min.js' %}"></script>
+	<script src="{% static 'demo.min.js' %}"></script>
 	<script type="text/javascript">
 		Box.Application.init();
 	</script>
 	<!-- Classie -->
-	<script src="js/classie.js"></script>
+	<script src="{% static 'js/classie.js' %}"></script>
 	<script>
 		var menuLeft = document.getElementById('cbp-spmenu-s1'),
 			showLeftPush = document.getElementById('showLeftPush'),
@@ -297,7 +321,7 @@
 	</script>
 	<!-- Bootstrap Core JavaScript -->
 
-	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 
 </html>
