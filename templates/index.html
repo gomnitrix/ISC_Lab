@@ -32,6 +32,7 @@
 	<link href="{% static 'css/jquerysctipttop.css' %}" rel="stylesheet" type="text/css">
 	<script src="{% static 'js/jquery.sparkline.min.js' %}"></script>
 	<script src="{% static 'js/Chart.js' %}"></script>
+	<script src="{% static 'js/watch.js' %}"></script>
 
 </head>
 
@@ -55,20 +56,56 @@
 								<a href="inputs.html"><i class="fa fa-cogs nav_icon"></i>Setting</a>
 							</li>
 							<li>
-								<a href="inputs.html"><i class="fa fa-check-square-o nav_icon"></i>Start</a>	<!--这里写开始方法的地址，下面那个写停止的-->
+								<div><button type="button" id="Botton" onclick="start()" class="fa fa-check-square-o nav_icon" >start</button></div>
+								<!--这里写开始方法的地址，下面那个写停止的-->
+                                 <script async language="JavaScript">
+                                 window.data = [0,0,0,0,0,0];
+								 function get_data()
+								 {
+								 	   $.ajax({
+                                    type: "GET",
+                                    url: "./proto", //后台处理函数的url
+
+
+						            success:function (result) { //获取后台处理后传过来的result
+                								data = result.data;
+
+                								},
+
+                					});
+								 }
+                                function start(){
+                                    $.ajax({
+                                    type: "GET",
+                                    url: "./start", //后台处理函数的url
+
+						            success:function (result) { //获取后台处理后传过来的result
+                								data = result.info;
+                								},
+                					});
+                                     setInterval(function(){get_data()},3000);
+								}
+								 </script>
 							</li>
 							<li>
-								<a class="chart-nav" href="inputs.html"><i class="fa fa-bar-chart nav_icon"></i>Stop</a>
+								<div><button type="button" id="Botton2" onclick="stop()" class="fa fa-bar-chart nav_icon" >Stop</button></div>
+
+								     <script language="JavaScript">
+                                function stop(){
+
+
+                                    $.ajax({
+                                    type: "GET",
+                                    url: "./stop", //后台处理函数的url
+
+						            success:function (result) { //获取后台处理后传过来的result
+                								data = result.info;
+                								},
+                					});
+								}
+								 </script>
 							</li>
-							<li>
-								<a href="#"><i class="fa fa-book nav_icon"></i>Elements</a>
-							</li>
-							<li>
-								<a><i class="fa fa-th-large nav_icon"></i>Widgets</a>
-							</li>
-							<li>
-								<a><i class="fa fa-file-text-o nav_icon"></i>Pages</a>
-							</li>
+
 						</ul>
 					</div>
 					<!-- //sidebar-collapse -->
@@ -180,49 +217,37 @@
 								<canvas id="sleet" width="20" height="20"></canvas>
 							</figure>
 							<canvas id="bar1" height="390" width="1093" style="width: 875px; height: 312px;"></canvas>
-							<div><button type="button" id="testBotton" onclick="DO()" >start</button></div>
-							<script language="JavaScript">
-							  var data = [0,0,0,0,0,0]
+
+							<script async language="JavaScript">
+
+                            function show(){
+
 							var barChartData = {
-									labels: ["SSL", "SSH", "HTTP", "FTP", "DNS", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
+                                    animation: false,
+									labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
 									datasets: [
 										{
-											fillColor: "#7c38bc",
-											strokeColor: "#7c38bc",
-											data: data /*这里传变量*/
+
+											data: data ,/*这里传变量*/
+											backgroundColor: [
+											'rgba(255, 99, 132, 0.6)',
+											'rgba(54, 162, 235, 0.6)',
+											'rgba(255, 206, 86, 0.6)',
+											'rgba(75, 192, 192, 0.6)',
+											'rgba(153, 102, 255, 0.6)',
+											'rgba(255, 159, 64, 0.6)']
 										}
+
 									]
-
 								};
-								new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData);
+							var options = {
+							  animation:false
+							}
+								new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData,options);
 
-                                function DO(){
+                            }
+                          setInterval(function(){show()},1000);
 
-
-                                    $.ajax({
-                                    type: "GET",
-                                    url: "../proto", //后台处理函数的url
-
-						            success:function (result) { //获取后台处理后传过来的result
-                								data = result.data;
-
-                								},
-                					});
-
-
-								var barChartData = {
-									labels: ["SSL", "SSH", "HTTP", "FTP", "DNS", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
-									datasets: [
-										{
-											fillColor: "#7c38bc",
-											strokeColor: "#7c38bc",
-											data: data /*这里传变量*/
-										}
-									]
-
-								};
-								new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData);
-								}
 							</script>
 						</div>
 					</div>
