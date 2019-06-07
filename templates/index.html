@@ -45,29 +45,29 @@
 					<div class="scrollbar scrollbar1" tabindex="5000" style="overflow: hidden; outline: none;">
 						<ul class="nav in" id="side-menu">
 							<li>
-								<a href="index.html" class="active"><i class="fa fa-home nav_icon"></i>Dashboard</a>
+								<a href="index.html" class="active"><i class="fa fa-home nav_icon"></i>
+									<figure class="icons">Home
+										<canvas id="clear-day" width="15" height="15"></canvas>
+									</figure>
+								</a>
 							</li>
 							<li>
-								<a href="inputs.html"><i class="fa fa-check-square-o nav_icon"></i>setting<span
-										class="fa arrow"></span></a>
+								<a href="inputs.html"><i class="fa fa-cogs nav_icon"></i>Setting</a>
 							</li>
 							<li>
-								<a href="#"><i class="fa fa-cogs nav_icon"></i>Components <span
-										class="fa arrow"></span></a>
+								<a href="inputs.html"><i class="fa fa-check-square-o nav_icon"></i>Start</a>	<!--这里写开始方法的地址，下面那个写停止的-->
 							</li>
 							<li>
-								<a href="#"><i class="fa fa-book nav_icon"></i>Elements <span
-										class="fa arrow"></span></a>
-								<!-- /nav-second-level -->
+								<a class="chart-nav" href="inputs.html"><i class="fa fa-bar-chart nav_icon"></i>Stop</a>
+							</li>
+							<li>
+								<a href="#"><i class="fa fa-book nav_icon"></i>Elements</a>
 							</li>
 							<li>
 								<a><i class="fa fa-th-large nav_icon"></i>Widgets</a>
 							</li>
 							<li>
-								<a><i class="fa fa-file-text-o nav_icon"></i>Pages<span class="fa arrow"></span></a>
-							</li>
-							<li>
-								<a class="chart-nav"><i class="fa fa-bar-chart nav_icon"></i>Charts</a>
+								<a><i class="fa fa-file-text-o nav_icon"></i>Pages</a>
 							</li>
 						</ul>
 					</div>
@@ -248,27 +248,27 @@
 				<div class="clearfix"> </div>
 			</div>
 			<div class="am-content">
-					<div data-module="firstlevel" class="am-animation-slide-left">
-						<div class="am-g">
-							<div class="am-u-md-12">
-								<div class="am-panel am-panel-default">
-									<div class="am-panel-hd">
-										<figure class="icons"><strong><b>应用流量细节</b></strong>
-											<canvas id="wind" width="20" height="20"></canvas>
-										</figure>
-									</div>
-									<div id="combo" class="am-panel-collapse am-collapse am-in">
-										<div class="am-panel-bd">
-											<div id="combo-main-content" render="true"></div>
-											<hr />
-											<div id="combo-main-echarts" render="true"></div>
-										</div>
+				<div data-module="firstlevel" class="am-animation-slide-left">
+					<div class="am-g">
+						<div class="am-u-md-12">
+							<div class="am-panel am-panel-default">
+								<div class="am-panel-hd">
+									<figure class="icons"><strong><b>应用流量细节</b></strong>
+										<canvas id="wind" width="20" height="20"></canvas>
+									</figure>
+								</div>
+								<div id="combo" class="am-panel-collapse am-collapse am-in">
+									<div class="am-panel-bd">
+										<div id="combo-main-content" render="true"></div>
+										<hr />
+										<div id="combo-main-echarts" render="true"></div>
 									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
+			</div>
 		</div>
 
 
