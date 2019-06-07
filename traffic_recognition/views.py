@@ -23,3 +23,15 @@ def proto_num(reguest):
     nums["data"] = data[0:6]
     return JsonResponse(nums)
 
+def get_sum(request):
+    data = {}
+    data["num"] = main.get_sum()
+    return JsonResponse(data)
+def get_riskflow(request):
+    data = {}
+    data["num"] = main.get_riskflow_num()
+    return  JsonResponse(data)
+def get_rst(request):
+    data = {}
+    data["num"] = main.get_rst_num()
+    return JsonResponse(data)
