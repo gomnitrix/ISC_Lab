@@ -35,6 +35,9 @@ def test(uq_opt=opt, **kwargs):
     for ii, (input_data, path) in enumerate(test_loader):
         if uq_opt.use_gpu:
             input_data = input_data.cuda()
+        temp_data = None
+        if flag:
+            temp_data = input_data
         pred = model(input_data)
         max_pre = pred.max(dim=1)
         probability = max_pre[0]
@@ -44,6 +47,8 @@ def test(uq_opt=opt, **kwargs):
                 label[i] = uq_opt.cates
         if not flag:
             label = list(zip(label, path))
+        else:
+            label = list(zip(temp_data, label))
         results.extend(label)
     return results
 
@@ -164,6 +169,6 @@ def myhelp():
 
 
 if __name__ == '__main__':
-    # fire.Fire()
-    train(lr=0.05, batch_size=64, max_epoch=15,
-          print_freq=10, model="IdentNet", load_model_path=opt.net1_model)
+    fire.Fire()
+    # train(lr=0.05, batch_size=64, max_epoch=15,
+    #       print_freq=10, model="IdentNet", load_model_path=opt.net1_model)
