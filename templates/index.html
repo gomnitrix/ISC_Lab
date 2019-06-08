@@ -148,7 +148,8 @@
 								<script>
                                   setInterval(function () {
                                   var element=document.getElementById("total");
-								  element.innerHTML= total;
+								  v = element.val();
+								  counterNum(element, v, total, 10, 2);
                                   }, 1000);
 								</script>
 
