@@ -2,7 +2,7 @@ import time
 
 import torch
 from torch import nn
-from config import root_path
+from network.config import root_path
 
 
 class BasicModel(nn.Module):
