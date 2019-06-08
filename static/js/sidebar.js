@@ -12,6 +12,46 @@ function get_data() {
 
     });
 }
+
+function get_total() {
+    $.ajax({
+        type: "GET",
+        url: "./pkt_sum", //后台处理函数的url
+
+
+        success: function (result) { //获取后台处理后传过来的result
+            total = result.num;
+
+        },
+
+    });
+}
+function get_rst() {
+    $.ajax({
+        type: "GET",
+        url: "./get_rst_num", //后台处理函数的url
+
+
+        success: function (result) { //获取后台处理后传过来的result
+            reset = result.num;
+
+        },
+
+    });
+}
+function get_riskflow() {
+    $.ajax({
+        type: "GET",
+        url: "./riskflow", //后台处理函数的url
+
+
+        success: function (result) { //获取后台处理后传过来的result
+            rf = result.num;
+
+        },
+
+    });
+}
 function start() {
     $.ajax({
         type: "GET",
@@ -21,7 +61,11 @@ function start() {
             data = result.info;
         },
     });
-    setInterval(function () { get_data() }, 3000);
+    setInterval(function () { get_data() }, 1000);
+    setInterval(function () { get_total() }, 1000);
+    setInterval(function () { get_riskflow() }, 1000);
+    setInterval(function () { get_rst() }, 1000);
+
 }
 function stop() {
 

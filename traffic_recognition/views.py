@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from identify.main import ident
+from identify.main import *
 
 
 # Create your views here.
@@ -25,3 +25,18 @@ def proto_num(reguest):
     print(data)
     nums = {"data": data[0:6]}
     return JsonResponse(nums)
+
+
+def get_sum(request):
+    data = {"num": get_sum()}
+    return JsonResponse(data)
+
+
+def get_riskflow(request):
+    data = {"num": get_riskflow_num()}
+    return JsonResponse(data)
+
+
+def get_rst(request):
+    data = {"num": get_rst_num()}
+    return JsonResponse(data)

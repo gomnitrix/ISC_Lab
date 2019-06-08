@@ -35,6 +35,10 @@
 	<script src="{% static 'js/watch.js' %}"></script>
 	<script async language="JavaScript">
 		window.data = [0, 0, 0, 0, 0, 0];
+		window.total = 0
+		window.rf = 0
+		window.blocked = 0
+		window.reset = 0
 	</script>
 	<script src="{% static 'js/sidebar.js' %}"></script>
 </head>
@@ -130,7 +134,14 @@
 							</div>
 							<div class="four-text">
 								<h3>Total</h3>
-								<h4> 266 </h4> <!-- 这里传变量-->
+								  <h4 id="total">0</h4>
+								<script>
+                                  setInterval(function () {
+                                  var element=document.getElementById("total");
+								  element.innerHTML= total;
+                                  }, 1000);
+								</script>
+
 							</div>
 						</div>
 					</div>
@@ -141,7 +152,13 @@
 							</div>
 							<div class="four-text">
 								<h3>Riskflow</h3>
-								<h4>15</h4><!-- 这里传变量-->
+								<h4 id = "rf">0</h4><!-- 这里传变量-->
+								<script>
+                                  setInterval(function () {
+                                  var element=document.getElementById("rf");
+								  element.innerHTML= rf;
+                                  }, 1000);
+								</script>
 							</div>
 						</div>
 					</div>
@@ -163,7 +180,13 @@
 							</div>
 							<div class="four-text">
 								<h3>Reseted</h3>
-								<h4>26</h4><!-- 这里传变量-->
+								<h4 id = "rst">26</h4><!-- 这里传变量-->
+								<script>
+                                  setInterval(function () {
+                                  var element=document.getElementById("rst");
+								  element.innerHTML= reset;
+                                  }, 1000);
+								</script>
 							</div>
 						</div>
 					</div>
