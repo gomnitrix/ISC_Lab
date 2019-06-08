@@ -35,11 +35,20 @@
 	<script src="{% static 'js/watch.js' %}"></script>
 	<script async language="JavaScript">
 		window.data = [0, 0, 0, 0, 0, 0];
-		window.total = 0
-		window.rf = 0
-		window.blocked = 0
-		window.reset = 0
-		window.time = [0,1,2,3,4,5]
+
+		window.total = 0;
+		window.rf = 0;
+		window.blocked = 0;
+		window.reset = 0;
+		window.time = [0,1,2,3,4,5];
+		window.app_num = [0,0,0,0,0,0];
+		window.app_num2 = [0,0,0,0,0];
+		window.qq = [0,0,0,0,0,0];
+		window.wc = [0,0,0,0,0,0];
+		window.iqy = [0,0,0,0,0,0];
+		window.tdr = [0,0,0,0,0,0];
+		window.we = [0,0,0,0,0,0];
+
 	</script>
 	<script src="{% static 'js/sidebar.js' %}"></script>
 </head>
@@ -284,9 +293,10 @@
 													  margin:0;
 													  padding:0;
 													  }
+
 													       table tbody {
                                                                  display:block;
-                                                                 height:80px;
+                                                                 height:400px;
                                                                  overflow-y:scroll;
 													       }
 													       table thead,
@@ -307,7 +317,7 @@
 													  </style>
 												</head>
 												 <body>
-											<table id="tab1"width='100%' height= 400 class='am-table am-table-bd am-table-bdrs am-table-striped am-table-hover'>
+											<table id="tab1"width='100%'  class='am-table am-table-bd am-table-bdrs am-table-striped am-table-hover'>
 												<thead>
 													<tr>
 														 <th>SRC_IP</th>
@@ -324,55 +334,6 @@
 													<td>80</td>
 													<td>80</td>
 													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
-												</tr>
-													<tr>
-													<td>172.0.0.1</td>
-													<td>116.52.42.11</td>
-													<td>80</td>
-													<td>80</td>
-													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
-												</tr>
-													<tr>
-													<td>172.0.0.1</td>
-													<td>116.52.42.11</td>
-													<td>80</td>
-													<td>80</td>
-													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
-												</tr>
-													<tr>
-													<td>172.0.0.1</td>
-													<td>116.52.42.11</td>
-													<td>80</td>
-													<td>80</td>
-													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
-												</tr>
-													<tr>
-													<td>172.0.0.1</td>
-													<td>116.52.42.11</td>
-													<td>80</td>
-													<td>80</td>
-													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
-												</tr>
-													<tr>
-													<td>172.0.0.1</td>
-													<td>116.52.42.11</td>
-													<td>80</td>
-													<td>80</td>
-													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
-												</tr>
-													<tr>
-													<td>172.0.0.1</td>
-													<td>116.52.42.11</td>
-													<td>80</td>
-													<td>80</td>
-													<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999</td>
-
 												</tr>
 												</tbody>
 											</table>

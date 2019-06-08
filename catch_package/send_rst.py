@@ -27,7 +27,7 @@ def recv_packet(pktdata):
 def sniff_recv():
     flt = "dst host " + str(src) + " and dst port " + str(sport) + " and src host " + str(dst) + " and src port " + str(dport)
 
-    print(flt)
+    #print(flt)
     sniff(prn = recv_packet,store = 0,filter=flt,count=1)
     return
 

@@ -47,6 +47,7 @@ def test(uq_opt=opt, **kwargs):
                 label[i] = uq_opt.cates
         if not flag:
             label = list(zip(label, path))  # (number,("ssl",00))
+
         else:
             label = list(zip(temp_data, label))
         results.extend(label)

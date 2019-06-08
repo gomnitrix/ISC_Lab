@@ -5,6 +5,7 @@ from network.config import DefaultConfig, opt
 from network.main import test
 from .global_queue import *
 
+
 proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "unknown": 0}
 
 app_static = {"QQ": 0, "WeChat": 0, "iqy": 0, "Thunder": 0, "NetEase": 0,"unknown": 0 }
@@ -63,10 +64,11 @@ class Net2Thread(BasicThread):
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net2_model, model="EncIdentNet"))
             while results:
                 item = results.pop(0)   # (number,("ssl",00))
+                #print(item)
                 kind = cates[item[0]]
                 tag = item[1]
                 net2_pretation.put((tag, (kind, "00" if kind != "unknown" else "10")))
-                ''' note:这里放进去的格式类似: (("ssh",00),"QQ",00)'''
+                ''' note:这里放进去的格式类似: (("ssh",00),("QQ",00))'''
 
 
 class StaticThread(BasicThread):
@@ -80,14 +82,15 @@ class StaticThread(BasicThread):
                 pkt = packet_Queue.get()
                 print(kind)
                 proto_static[kind[0][0]] = proto_static.get(kind[0][0]) + 1
+                app_static[kind[1][0]] = app_static.get(kind[1][0])+1
 
-                # test_____wait model two
-                if kind[0][1] == '01' and kind[2]=='10':
-                    global riskflow
+                # proto_static[kind[0][0]] = proto_static.get(kind[0][0]) + 1
+                #app_static[kind[1][0]] = app_static.get(kind[1][0])+1
+                #if kind[0][1] == '01' and kind[2]=='10':
+                if kind[0][1] == '01' and kind[1][1] == '10':
                     riskflow[0] = riskflow[0] + 1
                     if pkt[0] == 6:
                         theard_send_rst(pkt)
-
                     # risk_flow = High_risk_traffic(proto=pkt[0],src_ip=pkt[1],dst_ip=pkt[2],
                     #                               sport=pkt[3],dport = pkt[4],load=pkt[5])
                     # risk_flow.save()

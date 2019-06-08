@@ -52,6 +52,58 @@ function get_riskflow() {
 
     });
 }
+function get_app() {
+    $.ajax({
+        type: "GET",
+        url: "./app", //后台处理函数的url
+
+
+        success: function (result) { //获取后台处理后传过来的result
+            app_num = result.num;
+            app_num2 = app_num.slice(0,5);
+
+        },
+
+    });
+}
+
+function change()
+{
+
+   qq[0] = qq[1]
+   qq[1] = qq[2]
+   qq[2] = qq[3]
+   qq[3] = qq[4]
+   qq[4] = qq[5]
+   qq[5] = app_num2[0]
+     wc[0] = wc[1]
+   wc[1] = wc[2]
+   wc[2] = wc[3]
+   wc[3] = wc[4]
+   wc[4] = wc[5]
+   wc[5] = app_num2[1]
+
+     iqy[0] = iqy[1]
+   iqy[1] = iqy[2]
+   iqy[2] = iqy[3]
+   iqy[3] = iqy[4]
+   iqy[4] = iqy[5]
+   iqy[5] = app_num2[2]
+
+   tdr[0] = tdr[1]
+   tdr[1] = tdr[2]
+   tdr[2] = tdr[3]
+   tdr[3] = tdr[4]
+   tdr[4] = tdr[5]
+   tdr[5] = app_num2[3]
+
+    we[0] = we[1]
+  we[1] = we[2]
+   we[2] = we[3]
+   we[3] = we[4]
+   we[4] = we[5]
+   we[5] = app_num2[4]
+}
 function start() {
     $.ajax({
         type: "GET",
@@ -65,8 +117,12 @@ function start() {
     setInterval(function () { get_total() }, 1000);
     setInterval(function () { get_riskflow() }, 1000);
     setInterval(function () { get_rst() }, 1000);
+    setInterval(function () { get_app() }, 1000);
+     setInterval(function () { change() }, 1000);
 
 }
+
+
 function stop() {
 
 

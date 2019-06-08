@@ -21,13 +21,13 @@ def stop(request):
 
 
 def proto_num(reguest):
-    data = list(ident.get_static().values())
+    data = list(get_proto_static().values())
     print(data)
     nums = {"data": data[0:6]}
     return JsonResponse(nums)
 
 
-def get_sum(request):
+def pkt_sum(request):
     data = {"num": get_sum()}
     return JsonResponse(data)
 
@@ -40,3 +40,8 @@ def get_riskflow(request):
 def get_rst(request):
     data = {"num": get_rst_num()}
     return JsonResponse(data)
+
+def app_num(request):
+    data = list(get_app_num().values())
+    nums = {"num": data[0:5]}
+    return JsonResponse(nums)

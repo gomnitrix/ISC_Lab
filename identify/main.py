@@ -1,6 +1,6 @@
 import time
 
-from identify.IdentifyThread import CaptureThread, Net1Thread, Net2Thread, StaticThread, proto_static, riskflow, rst_num
+from identify.IdentifyThread import CaptureThread, Net1Thread, Net2Thread, StaticThread, proto_static, riskflow, rst_num,app_static
 
 
 class Identify:
@@ -27,11 +27,12 @@ class Identify:
             thread.start()
 
 
-def get_static():
+def get_proto_static():
     return proto_static
 
+def get_app_num():
+    return app_static
 
-ident = Identify()
 
 
 def get_sum():
@@ -46,6 +47,7 @@ def get_riskflow_num():
 def get_rst_num():
     return rst_num[0]
 
+ident = Identify()
 
 if __name__ == '__main__':
     ident.message_share()
