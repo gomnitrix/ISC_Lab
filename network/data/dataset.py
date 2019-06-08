@@ -63,7 +63,8 @@ class EncTestDataFlow(data.Dataset):
         if self.queue.empty():
             print("empty!!")
             time.sleep(3)
-        return self.queue.get()[0], "test"
+        item = self.queue.get()
+        return item[0], item[1]
 
     def __len__(self):
         return self.queue.qsize()
