@@ -44,8 +44,10 @@ class Net1Thread(BasicThread):
         while not self.if_stopped():
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net1_model))
             while results:
-                kind = cates[results.pop(0)]
-                net1_pretation.put([kind, "00" if kind != "unknown" else "01"])
+                item = results.pop(0)
+                kind = cates[item[1]]
+                data = item[0]
+                net1_pretation.put([data, kind, "00" if kind != "unknown" else "01"])
 
 
 class Net2Thread(BasicThread):
@@ -63,7 +65,8 @@ class Net2Thread(BasicThread):
                 item = results.pop(0)
                 kind = cates[item[0]]
                 tag = item[1]
-                net2_pretation.put((kind, tag, "00" if kind != "unknown" else "10"))
+                net2_pretation.put((tag, kind, "00" if kind != "unknown" else "10"))
+                ''' note:这里放进去的格式类似: (("ssh",00),"QQ",00)'''
                 print(kind)
 
 
