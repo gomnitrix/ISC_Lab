@@ -7,7 +7,7 @@ from .global_queue import *
 
 proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "unknown": 0}
 
-app_static = {"QQ": 0, "wechat": 0, "wangyi": 0, "thrunder": 0}
+app_static = {"QQ": 0, "WeChat": 0, "iqy": 0, "Thunder": 0, "NetEase": 0,"unknown": 0 }
 riskflow = [0]
 
 
@@ -76,12 +76,14 @@ class StaticThread(BasicThread):
 
     def run(self):
         while not self.if_stopped():
-            while not packet_Queue.empty() and not net1_pretation.empty():
-                kind = net1_pretation.get()
+            while not packet_Queue.empty() and not net2_pretation.empty():
+                kind = net2_pretation.get()
                 pkt = packet_Queue.get()
-                proto_static[kind[0]] = proto_static.get(kind[0]) + 1
+                print(kind)
+                proto_static[kind[0][0]] = proto_static.get(kind[0][0]) + 1
+
                 # test_____wait model two
-                if kind[1] == '01':
+                if kind[0][1] == '01' and kind[2]=='10':
                     global riskflow
                     riskflow[0] = riskflow[0] + 1
                     if pkt[0] == 6:
