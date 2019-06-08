@@ -46,7 +46,7 @@ def test(uq_opt=opt, **kwargs):
             if probability[i] < uq_opt.threshold:
                 label[i] = uq_opt.cates
         if not flag:
-            label = list(zip(label, path))
+            label = list(zip(label, path))  # (number,("ssl",00))
         else:
             label = list(zip(temp_data, label))
         results.extend(label)
