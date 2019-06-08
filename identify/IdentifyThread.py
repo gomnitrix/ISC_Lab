@@ -1,12 +1,11 @@
-import threading
-import queue
-
-from network.config import opt
+from network.main import test
 from catch_package.catch_pkt import *
-from network.main import *
 from catch_package.catch_pkt import packet_Queue
-net1_pretation = queue.Queue()
-proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0,"unknown":0}
+from network.config import opt, DefaultConfig
+from .global_queue import *
+
+proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "unknown": 0}
+
 
 class BasicThread(threading.Thread):
     def __init__(self):
@@ -36,21 +35,37 @@ class Net1Thread(BasicThread):
     def run(self):
         results = []
         cates = {val: key for key, val in opt.classes_dict.items()}
-        cates[opt.cates] = "unknown"
-
+        cates[len(opt.classes_dict)] = "unknown"
+        uq_opt = DefaultConfig()
         while not self.if_stopped():
-            tt  = test()
-
-            results.extend(tt)
+            results.extend(test(uq_opt=uq_opt, load_model_path=opt.net1_model))
             while results:
                 kind = cates[results.pop(0)]
-
                 net1_pretation.put([kind, "00" if kind != "unknown" else "01"])
 
 
-class staticThread(BasicThread):
+class Net2Thread(BasicThread):
     def __init__(self):
-        super(staticThread, self).__init__()
+        super(Net2Thread, self).__init__()
+
+    def run(self):
+        results = []
+        cates = {val: key for key, val in opt.app_dict.items()}
+        cates[len(opt.app_dict)] = "unknown"
+        uq_opt = DefaultConfig()
+        while not self.if_stopped():
+            results.extend(test(uq_opt=uq_opt, load_model_path=opt.net2_model, model="EncIdentNet"))
+            while results:
+                item = results.pop(0)
+                kind = cates[item[0]]
+                tag = item[1]
+                net2_pretation.put((kind, tag, "00" if kind != "unknown" else "10"))
+                print(kind)
+
+
+class StaticThread(BasicThread):
+    def __init__(self):
+        super(StaticThread, self).__init__()
 
     def run(self):
         while not self.if_stopped():
@@ -58,10 +73,4 @@ class staticThread(BasicThread):
             while not packet_Queue.empty() and not net1_pretation.empty():
                 kind = net1_pretation.get()
                 pkt = packet_Queue.get()
-                proto_static[kind[0]] = proto_static.get(kind[0])+1
-
-
-
-if __name__ == '__main__':
-    net1 = Net1Thread()
-    Net1Thread.start()
+                proto_static[kind[0]] = proto_static.get(kind[0]) + 1

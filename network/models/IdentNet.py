@@ -5,7 +5,7 @@ from .BasicModel import BasicModel
 
 
 class IdentNet(BasicModel):
-    def __init__(self, num_classes=opt.cates):
+    def __init__(self, num_classes=len(opt.classes_dict)):
         super(IdentNet, self).__init__()
         self.model_name = 'IdentNet'
         self.features = nn.Sequential(
@@ -28,5 +28,4 @@ class IdentNet(BasicModel):
         x = self.features(x)
         x = x.view(x.size(0), 12544)
         x = self.classifier(x)
-        # x = softmax(x, dim=1)
         return x

@@ -37,11 +37,11 @@ class DBHelper:
         if cursor:
             cursor.close()
 
-    def write_data(self, name, data, conn):
+    def write_data(self, name, data, label, conn):
         cursor = None
         try:
-            sql = "insert into training_data (data_name,data) values (%s, %s)"
-            cursor, num = self.execute(sql, args=(name, data), conn=conn)
+            sql = "insert into app_datas (data_name,data,label) values (%s, %s, %s)"
+            cursor, num = self.execute(sql, args=(name, data, label), conn=conn)
         except Exception as e:
             conn.rollback()
             raise Exception("insert failed!")
@@ -50,21 +50,22 @@ class DBHelper:
             DBHelper.close(cursor=cursor)
 
     def read_data(self, name, conn):
-        sql = "select data from training_data where data_name = '{}'".format(name)
+        sql = "select data,label from app_datas where data_name = '{}'".format(name)
         cursor = None
         try:
             cursor, num = self.execute(sql, conn=conn)
             values = cursor.fetchall()
             data = np.frombuffer(values[0][0], dtype='f')
             data = data.reshape((1, 32, 32))
+            label = values[0][1]
         except Exception as e:
             raise Exception("read failed!")
         finally:
             DBHelper.close(cursor=cursor)
-        return data
+        return data, label
 
     def get_files(self, conn):
-        sql = "select data_name from training_data"
+        sql = "select data_name from app_datas"
         cursor = None
         try:
             cursor, num = self.execute(sql, conn)

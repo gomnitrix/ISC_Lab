@@ -5,9 +5,9 @@ from .BasicModel import BasicModel
 
 
 class EncIdentNet(BasicModel):
-    def __init__(self, num_classes=opt.cates):
+    def __init__(self, num_classes=len(opt.app_dict)):
         super(EncIdentNet, self).__init__()
-        self.model_name = 'IdentNet'
+        self.model_name = 'EncIdentNet'
         self.features = nn.Sequential(
             nn.Conv2d(1, 32, kernel_size=5, stride=1),
             nn.ReLU(inplace=True),
@@ -17,17 +17,16 @@ class EncIdentNet(BasicModel):
             nn.MaxPool2d(kernel_size=2, stride=2),
             nn.Conv2d(64, 128, kernel_size=3, stride=1),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.25),
+            nn.Dropout(0.1),
         )
         self.classifier = nn.Sequential(
             nn.Linear(2048, 128),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.25),
+            nn.Dropout(0.15),
             nn.Linear(128, 128),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.50),
+            nn.Dropout(0.25),
             nn.Linear(128, num_classes),
-            # nn.ReLU(inplace=True),
         )
 
     def forward(self, x):

@@ -6,41 +6,44 @@ from torchnet import meter
 
 from network import models
 from network.config import opt
-from network.data import DataFlow, TestDataFlow
+from network.data import DataFlow, TestDataFlow, EncTestDataFlow
 from network.utils import Visualizer
 
 
-def test(**kwargs):
-    opt.parse(kwargs)
-    opt.if_print = False
+def test(uq_opt=opt, **kwargs):
+    uq_opt.parse(kwargs)
+    uq_opt.if_print = False
+    flag = (uq_opt.model == "IdentNet")
+
+    # model
+    model = getattr(models, uq_opt.model)()
+    if uq_opt.load_model_path:
+        model.load(uq_opt.load_model_path)
+    if uq_opt.use_gpu:
+        model = model.cuda()
 
     # data
-    test_data = TestDataFlow()
+    test_data = TestDataFlow() if flag else EncTestDataFlow()
     test_loader = DataLoader(
         test_data,
-        batch_size=opt.batch_size,
+        batch_size=uq_opt.batch_size,
         shuffle=False,
         # num_workers=opt.num_workers
     )
     results = []
 
-    # model
-    model = getattr(models, opt.model)()
-    if opt.load_model_path:
-        model.load(opt.load_model_path)
-    if opt.use_gpu:
-        model = model.cuda()
-
     for ii, (input_data, path) in enumerate(test_loader):
-        if opt.use_gpu:
+        if uq_opt.use_gpu:
             input_data = input_data.cuda()
         pred = model(input_data)
         max_pre = pred.max(dim=1)
         probability = max_pre[0]
         label = max_pre[1].data.tolist()
         for i in range(len(probability)):
-            if probability[i] < opt.threshold:
-                label[i] = opt.cates
+            if probability[i] < uq_opt.threshold:
+                label[i] = uq_opt.cates
+        if not flag:
+            label = list(zip(label, path))
         results.extend(label)
     return results
 
@@ -161,5 +164,6 @@ def myhelp():
 
 
 if __name__ == '__main__':
-    fire.Fire()
-    # train(lr=0.3, batch_size=128, max_epoch=15, print_freq=5,load_model_path=root_path + "\checkpoints\IdentNet_0604_16_03_24.pth")
+    # fire.Fire()
+    train(lr=0.05, batch_size=64, max_epoch=15,
+          print_freq=10, model="IdentNet", load_model_path=opt.net1_model)

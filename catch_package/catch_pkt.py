@@ -4,7 +4,8 @@ import numpy as np
 import psutil
 from scapy.all import *
 import threading
-Queue = queue.Queue()
+
+raw_data_queue = queue.Queue()
 packet_Queue = queue.Queue()
 cond = threading.Condition()
 
@@ -59,17 +60,13 @@ def packet_load(package):
             if img.any():
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
-                data = (proto,src,dst,sport,dport,load)
+                data = (proto, src, dst, sport, dport, load)
 
-                Queue.put(formed_array)
+                raw_data_queue.put(formed_array)
                 packet_Queue.put(data)
                 cond.notifyAll()
-
 
 
 def catch_packet(num):
     dev = get_netcard()
     sniff(iface=dev, prn=packet_load, count=num)
-
-
-

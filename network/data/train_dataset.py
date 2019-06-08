@@ -7,21 +7,24 @@ from utils import DBHelper as Db
 def pretreatment(classes=None):
     if not classes:
         classes = [
-            os.path.join("./raw/", file) for file in os.listdir("./raw/")
+            os.path.join("./raw/app/", file) for file in os.listdir("./raw/app/")
         ]
     helper = Db()
     conn = helper.get_con()
     for cls in classes:
         with PcapReader(cls) as reader:
-            idx = 1
+            idx = 18000
             file_prefix = str(cls).split("/")[-1].split(".")[0] + "_"
+            label = file_prefix.strip('_')
             for item in reader:
                 if 'TCP' in item:
                     load = item['TCP'].payload
                 elif 'UDP' in item:
                     load = item['UDP'].payload
-                else:
+                elif 'IPv6' in item:
                     load = item['IPv6'].payload
+                else:
+                    continue
                 load = bytes(load)[:1024]
                 if not load:
                     continue
@@ -35,14 +38,14 @@ def pretreatment(classes=None):
                     if np.any(np.isnan(formed_array)):
                         continue
                     name = file_prefix + str(idx)
-                    helper.write_data(name, formed_array.tostring(), conn)
+                    helper.write_data(name, formed_array.tostring(), label, conn)
                     idx += 1
-                if idx >= 15000:
+                if idx >= 23000:
                     break
 
 
 if __name__ == '__main__':
-    pretreatment(["./raw/mysql.pcapng"])
+    pretreatment(["./raw/app/Thunder.pcapng"])
     h = Db()
     conn = h.get_con(False)
     files = h.get_files(conn)
@@ -50,4 +53,4 @@ if __name__ == '__main__':
     data = h.read_data(files[0][0], conn)
     conn.close()
     print(data)
-    print(data.shape)
+    print(data[0].shape)

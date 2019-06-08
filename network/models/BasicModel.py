@@ -2,6 +2,7 @@ import time
 
 import torch
 from torch import nn
+from config import root_path
 
 
 class BasicModel(nn.Module):
@@ -10,20 +11,10 @@ class BasicModel(nn.Module):
         self.model_name = str(type(self))
 
     def load(self, path):
-        if path and self.model_name.startswith('AlexNet'):
-            pretrain_dict = torch.load(path)
-            alex_dict = self.state_dict()
-            pretrain_dict = {
-                k: v
-                for k, v in pretrain_dict.items() if k in alex_dict
-            }
-            alex_dict.update(pretrain_dict)
-            self.load_state_dict(alex_dict)
-            return
         self.load_state_dict(torch.load(path))
 
     def save(self, name=None):
-        prefix = '/home/ljw/PycharmProjects/lsc/network/checkpoints'
+        prefix = root_path + "\checkpoints\\"
 
         if not name:
             prefix = prefix + self.model_name + '_'
