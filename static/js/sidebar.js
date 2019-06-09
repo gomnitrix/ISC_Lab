@@ -103,6 +103,9 @@ function change()
    we[3] = we[4]
    we[4] = we[5]
    we[5] = app_num2[4]
+
+
+
 }
 function start() {
     $.ajax({
