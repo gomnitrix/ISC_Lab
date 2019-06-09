@@ -79,3 +79,16 @@ function stop() {
         },
     });
 }
+
+function counterNum(obj, start, end, step, duration) {
+    $(obj).html(start);
+    setInterval(function () {
+        var val = Number($(obj).html());
+        if (val < end) {
+            $(obj).html(val + step);
+        } else {
+            $(obj).html(end);
+            clearInterval();
+        }
+    }, duration);
+}

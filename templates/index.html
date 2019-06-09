@@ -134,13 +134,13 @@
 							</div>
 							<div class="four-text">
 								<h3>Total</h3>
-								  <h4 id="total">0</h4>
+								<h4 id="total">0</h4>
 								<script>
-                                  setInterval(function () {
-                                  var element=document.getElementById("total");
-								  v = element.val();
-								  counterNum(element, v, total, 10, 2);
-                                  }, 1000);
+									setInterval(function () {
+										var element = document.getElementById("total");
+										v = element.value;
+										counterNum(element, v, total, (total - v) / 20, 20);
+									}, 1000);
 								</script>
 
 							</div>
@@ -153,12 +153,13 @@
 							</div>
 							<div class="four-text">
 								<h3>Riskflow</h3>
-								<h4 id = "rf">0</h4><!-- 这里传变量-->
+								<h4 id="rf">0</h4><!-- 这里传变量-->
 								<script>
-                                  setInterval(function () {
-                                  var element=document.getElementById("rf");
-								  element.innerHTML= rf;
-                                  }, 1000);
+									setInterval(function () {
+										var element = document.getElementById("rf");
+										v = element.value;
+										counterNum(element, v, rf, (rf - v) / 20, 20);
+									}, 1000);
 								</script>
 							</div>
 						</div>
@@ -170,7 +171,14 @@
 							</div>
 							<div class="four-text">
 								<h3>Blocked</h3>
-								<h4>9</h4><!-- 这里传变量-->
+								<h4 id="block">9</h4><!-- 这里传变量-->
+								<!--<script>
+									setInterval(function () {
+										var element = document.getElementById("block");
+										v = element.value;
+										counterNum(element, v, block, (block - v) / 20, 20);
+									}, 1000);
+								</script>-->
 							</div>
 						</div>
 					</div>
@@ -181,12 +189,13 @@
 							</div>
 							<div class="four-text">
 								<h3>Reseted</h3>
-								<h4 id = "rst">26</h4><!-- 这里传变量-->
+								<h4 id="rst">26</h4><!-- 这里传变量-->
 								<script>
-                                  setInterval(function () {
-                                  var element=document.getElementById("rst");
-								  element.innerHTML= reset;
-                                  }, 1000);
+									setInterval(function () {
+										var element = document.getElementById("rst");
+										v = element.value;
+										counterNum(element, v, reset, (reset - v) / 20, 20);
+									}, 1000);
 								</script>
 							</div>
 						</div>
