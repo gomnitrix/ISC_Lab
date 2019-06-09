@@ -89,7 +89,6 @@ class StaticThread(BasicThread):
             while not packet_Queue.empty() and not net2_pretation.empty():
                 kind = net2_pretation.get()
                 pkt = packet_Queue.get()
-                print(kind)
                 proto_static[kind[0][0]] = proto_static.get(kind[0][0]) + 1
                 app_static[kind[1][0]] = app_static.get(kind[1][0])+1
 

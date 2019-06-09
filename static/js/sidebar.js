@@ -60,49 +60,48 @@ function get_app() {
 
         success: function (result) { //获取后台处理后传过来的result
             app_num = result.num;
-            app_num2 = app_num.slice(0,5);
+            app_num2 = app_num.slice(0, 5);
 
         },
 
     });
 }
 
-function change()
-{
+function change() {
 
-   qq[0] = qq[1]
-   qq[1] = qq[2]
-   qq[2] = qq[3]
-   qq[3] = qq[4]
-   qq[4] = qq[5]
-   qq[5] = app_num2[0]
-     wc[0] = wc[1]
-   wc[1] = wc[2]
-   wc[2] = wc[3]
-   wc[3] = wc[4]
-   wc[4] = wc[5]
-   wc[5] = app_num2[1]
+    qq[0] = qq[1]
+    qq[1] = qq[2]
+    qq[2] = qq[3]
+    qq[3] = qq[4]
+    qq[4] = qq[5]
+    qq[5] = app_num2[0]
+    wc[0] = wc[1]
+    wc[1] = wc[2]
+    wc[2] = wc[3]
+    wc[3] = wc[4]
+    wc[4] = wc[5]
+    wc[5] = app_num2[1]
 
-     iqy[0] = iqy[1]
-   iqy[1] = iqy[2]
-   iqy[2] = iqy[3]
-   iqy[3] = iqy[4]
-   iqy[4] = iqy[5]
-   iqy[5] = app_num2[2]
+    iqy[0] = iqy[1]
+    iqy[1] = iqy[2]
+    iqy[2] = iqy[3]
+    iqy[3] = iqy[4]
+    iqy[4] = iqy[5]
+    iqy[5] = app_num2[2]
 
-   tdr[0] = tdr[1]
-   tdr[1] = tdr[2]
-   tdr[2] = tdr[3]
-   tdr[3] = tdr[4]
-   tdr[4] = tdr[5]
-   tdr[5] = app_num2[3]
+    tdr[0] = tdr[1]
+    tdr[1] = tdr[2]
+    tdr[2] = tdr[3]
+    tdr[3] = tdr[4]
+    tdr[4] = tdr[5]
+    tdr[5] = app_num2[3]
 
     we[0] = we[1]
-  we[1] = we[2]
-   we[2] = we[3]
-   we[3] = we[4]
-   we[4] = we[5]
-   we[5] = app_num2[4]
+    we[1] = we[2]
+    we[2] = we[3]
+    we[3] = we[4]
+    we[4] = we[5]
+    we[5] = app_num2[4]
 
 
 
@@ -117,12 +116,11 @@ function start() {
         },
     });
     setInterval(function () { get_data() }, 1000);
-    setInterval(function () { get_total() }, 1000);
-    setInterval(function () { get_riskflow() }, 1000);
-    setInterval(function () { get_rst() }, 1000);
+    setInterval(function () { get_total();counterTotal(); }, 1000);
+    setInterval(function () { get_riskflow();counterRf(); }, 1000);
+    setInterval(function () { get_rst();counterReset(); }, 1000);
     setInterval(function () { get_app() }, 1000);
-     setInterval(function () { change() }, 1000);
-
+    setInterval(function () { change() }, 1000);
 }
 
 
@@ -139,15 +137,48 @@ function stop() {
     });
 }
 
-function counterNum(obj, start, end, step, duration) {
-    $(obj).html(start);
+
+function counterTotal() {
+    var element = document.getElementById("total");
+    step = Math.round((total - element.value) / 20)
     setInterval(function () {
-        var val = Number($(obj).html());
-        if (val < end) {
-            $(obj).html(val + step);
+        val = element.value;
+        val = val + step
+        if (val < total) {
+            element.innerHTML = val;
         } else {
-            $(obj).html(end);
+            element.innerHTML = total;
             clearInterval();
         }
-    }, duration);
+    }, 30);
+}
+
+function counterRf() {
+    var element = document.getElementById("rf");
+    step = Math.round((rf - element.value) / 20)
+    setInterval(function () {
+        val = element.value;
+        val = val + step
+        if (val < rf) {
+            element.innerHTML = val;
+        } else {
+            element.innerHTML = rf;
+            clearInterval();
+        }
+    }, 30);
+}
+
+function counterReset() {
+    var element = document.getElementById("rst");
+    step = Math.round((reset - element.value) / 20)
+    setInterval(function () {
+        val = element.value;
+        val = val + step
+        if (val < reset) {
+            element.innerHTML = val;
+        } else {
+            element.innerHTML = reset;
+            clearInterval();
+        }
+    }, 30);
 }
