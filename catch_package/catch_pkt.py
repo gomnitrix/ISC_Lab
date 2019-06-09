@@ -8,6 +8,7 @@ import threading
 raw_data_queue = queue.Queue()
 packet_Queue = queue.Queue()
 cond = threading.Condition()
+lock = Lock()
 
 
 def get_netcard():
@@ -62,8 +63,10 @@ def packet_load(package):
                 formed_array = (img - amin) / (amax - amin)
                 data = (proto, src, dst, sport, dport, load)
 
+                lock.acquire()
                 raw_data_queue.put(formed_array)
                 packet_Queue.put(data)
+                lock.release()
                 cond.notifyAll()
 
 

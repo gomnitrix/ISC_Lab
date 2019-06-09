@@ -4,6 +4,7 @@ from catch_package.send_rst import *
 from network.config import DefaultConfig, opt
 from network.main import test
 from .global_queue import *
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "unknown": 0}
 
@@ -28,8 +29,15 @@ class CaptureThread(BasicThread):
         super(CaptureThread, self).__init__()
 
     def run(self):
+        executor = ThreadPoolExecutor(max_workers=opt.num_workers)
+        all_task = []
         while not self.if_stopped():
-            catch_packet(opt.capture_num)
+            future = executor.submit(catch_packet, opt.capture_num)
+            all_task.append(future)
+            time.sleep(0.4)
+        executor.shutdow()
+        for task in all_task:
+            task.cancel()
 
 
 class Net1Thread(BasicThread):
@@ -78,7 +86,8 @@ class StaticThread(BasicThread):
             while not packet_Queue.empty() and not net1_pretation.empty():
                 kind = net1_pretation.get()
                 pkt = packet_Queue.get()
-                proto_static[kind[0]] = proto_static.get(kind[0]) + 1
+                protocal = kind[0]
+                proto_static[protocal] = proto_static.get(protocal) + 1
                 # test_____wait model two
                 if kind[1] == '01':
                     global riskflow
