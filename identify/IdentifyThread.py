@@ -54,7 +54,7 @@ class Net1Thread(BasicThread):
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net1_model))
             while results:
                 kind = cates[results.pop(0)]
-                net1_pretation.put([kind, "00" if kind != "unknown" else "01"])
+                net1_pretation.put((kind, "00" if kind != "unknown" else "01"))
 
 
 class Net2Thread(BasicThread):
