@@ -53,10 +53,8 @@ class Net1Thread(BasicThread):
         while not self.if_stopped():
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net1_model))
             while results:
-                item = results.pop(0)  # (data,number)
-                kind = cates[item[1]]
-                data = item[0]
-                net1_pretation.put([data, kind, "00" if kind != "unknown" else "01"])
+                kind = cates[results.pop(0)]
+                net1_pretation.put([kind, "00" if kind != "unknown" else "01"])
 
 
 class Net2Thread(BasicThread):
@@ -71,9 +69,11 @@ class Net2Thread(BasicThread):
         while not self.if_stopped():
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net2_model, model="EncIdentNet"))
             while results:
-                item = results.pop(0)  # (number,ssl_00)
-                kind = cates[item[0]]
-                tag = tuple(item[1].split('_'))
+                if net1_pretation.empty():
+                    time.sleep(0.5)
+                    continue
+                kind = cates[results.pop(0)]
+                tag = net1_pretation.get()
                 net2_pretation.put((tag, (kind, "00" if kind != "unknown" else "10")))
                 ''' note:这里放进去的格式类似: (("ssh",00),"QQ",00)'''
 

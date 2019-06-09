@@ -6,7 +6,8 @@ import psutil
 from scapy.all import *
 from network.config import opt
 
-raw_data_queue = queue.Queue()
+net1_datas = queue.Queue()
+net2_datas = queue.Queue()
 packet_Queue = queue.Queue()
 raw_package_queue = queue.Queue()
 cond = threading.Condition()
@@ -66,7 +67,8 @@ def packet_load(package):
                 data = (proto, src, dst, sport, dport, load)
 
                 lock.acquire()
-                raw_data_queue.put(formed_array)
+                net1_datas.put(formed_array)
+                net2_datas.put(formed_array)
                 packet_Queue.put(data)
                 lock.release()
                 cond.notifyAll()
