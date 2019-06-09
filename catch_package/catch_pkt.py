@@ -1,12 +1,14 @@
 import queue
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import psutil
 from scapy.all import *
-import threading
+from network.config import opt
 
 raw_data_queue = queue.Queue()
 packet_Queue = queue.Queue()
+raw_package_queue = queue.Queue()
 cond = threading.Condition()
 lock = Lock()
 
@@ -68,6 +70,17 @@ def packet_load(package):
                 packet_Queue.put(data)
                 lock.release()
                 cond.notifyAll()
+
+
+def put_packet(package):
+    raw_package_queue.put(package)
+
+
+def handle_packages():
+    with ThreadPoolExecutor(max_workers=opt.num_workers) as executor:
+        while not raw_package_queue.empty():
+            package = raw_package_queue.get()
+            executor.submit(packet_load, package)
 
 
 def catch_packet(num):

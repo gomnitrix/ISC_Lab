@@ -1,10 +1,9 @@
-from catch_package.catch_pkt import *
+from catch_package.catch_pkt import catch_packet,handle_packages
 from catch_package.catch_pkt import packet_Queue
 from catch_package.send_rst import *
 from network.config import DefaultConfig, opt
 from network.main import test
 from .global_queue import *
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "unknown": 0}
 
@@ -29,15 +28,17 @@ class CaptureThread(BasicThread):
         super(CaptureThread, self).__init__()
 
     def run(self):
-        executor = ThreadPoolExecutor(max_workers=opt.num_workers)
-        all_task = []
         while not self.if_stopped():
-            future = executor.submit(catch_packet, opt.capture_num)
-            all_task.append(future)
-            time.sleep(0.4)
-        executor.shutdow()
-        for task in all_task:
-            task.cancel()
+            catch_packet(opt.capture_num)
+
+
+class HandleThread(BasicThread):
+    def __init__(self):
+        super(HandleThread, self).__init__()
+
+    def run(self):
+        while not self.if_stopped():
+            handle_packages()
 
 
 class Net1Thread(BasicThread):

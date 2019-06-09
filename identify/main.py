@@ -1,6 +1,4 @@
-import time
-
-from identify.IdentifyThread import CaptureThread, Net1Thread, Net2Thread, StaticThread, proto_static, riskflow, rst_num
+from identify.IdentifyThread import *
 
 
 class Identify:
@@ -13,10 +11,11 @@ class Identify:
 
     def message_share(self):
         capture_thread = CaptureThread()
+        handle_thread = HandleThread()
         net1_thread = Net1Thread()
         net2_thread = Net2Thread()
         staticthread = StaticThread()
-        self.thread_list.extend([capture_thread, net1_thread, net2_thread, staticthread])
+        self.thread_list.extend([capture_thread, handle_thread, net1_thread, net2_thread, staticthread])
 
         flag = True
         for thread in self.thread_list:
