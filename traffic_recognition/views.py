@@ -32,6 +32,7 @@ def pkt_sum(request):
     return JsonResponse(data)
 
 
+
 def get_riskflow(request):
     data = {"num": get_riskflow_num()}
     return JsonResponse(data)
@@ -43,5 +44,5 @@ def get_rst(request):
 
 def app_num(request):
     data = list(get_app_num().values())
-    nums = {"num": data[0:5]}
+    nums = {"num": data[0:6]}
     return JsonResponse(nums)

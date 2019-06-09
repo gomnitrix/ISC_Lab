@@ -1,5 +1,4 @@
 import pymysql
-import numpy as np
 
 __metaclass__ = type
 
@@ -10,12 +9,14 @@ class DBHelper:
         config = {
             'host': 'localhost',
             'port': 3306,
-            'user': '1160300103',
-            'password': '19981017',
-            'db': 'ics_db',
+            'user': 'root',
+            'password': '1026Lijing-=',
+            'db': 'lsc_lab',
             'charset': 'utf8',
             'cursorclass': pymysql.cursors.DictCursor,
         }
+
+
         if not if_dict:
             config['cursorclass'] = pymysql.cursors.Cursor
 
@@ -23,11 +24,13 @@ class DBHelper:
         return conn
 
     @staticmethod
-    def execute(sql, conn, args=None):
+    def execute(sql,conn, args=None):
+
         if not conn:
             raise Exception("connect failed")
         cursor = conn.cursor()  # (pymysql.cursors.DictCursor)
         num = cursor.execute(sql, args)
+
         return cursor, num
 
     @staticmethod
@@ -37,11 +40,12 @@ class DBHelper:
         if cursor:
             cursor.close()
 
-    def write_data(self, name, data, label, conn):
+    def write_data(self,proto,src_ip,dst_ip,sport,dport,load):
         cursor = None
+        conn = self.get_con()
         try:
-            sql = "insert into app_datas (data_name,data,label) values (%s, %s, %s)"
-            cursor, num = self.execute(sql, args=(name, data, label), conn=conn)
+            sql = "insert into traffic_recognition_high_risk_traffic(id,proto,src_ip,dst_ip,sport,dport,load) values (%d,%d, %s, %s, %d, %d, %s)"
+            cursor, num = self.execute(sql, args=(proto,src_ip,dst_ip,sport,dport,load), conn=conn)
         except Exception as e:
             conn.rollback()
             raise Exception("insert failed!")
@@ -49,26 +53,31 @@ class DBHelper:
             conn.commit()
             DBHelper.close(cursor=cursor)
 
-    def read_data(self, name, conn):
-        sql = "select data,label from app_datas where data_name = '{}'".format(name)
+
+    def  delete_all(self):
+        sql = "delete from traffic_recognition_high_risk_traffic"
+        self.execute(sql,conn=self.get_con())
+
+
+    def read_data(self,id):
+        sql = "select proto,src_ip,dst_ip,sport,dport,load from  traffic_recognition_high_risk_traffic where id = " + id
         cursor = None
         try:
-            cursor, num = self.execute(sql, conn=conn)
+            cursor, num = self.execute(sql, conn=self.get_con())
             values = cursor.fetchall()
-            data = np.frombuffer(values[0][0], dtype='f')
-            data = data.reshape((1, 32, 32))
-            label = values[0][1]
         except Exception as e:
             raise Exception("read failed!")
         finally:
             DBHelper.close(cursor=cursor)
-        return data, label
+        return values
 
-    def get_files(self, conn):
+
+
+    def get_files(self):
         sql = "select data_name from app_datas"
         cursor = None
         try:
-            cursor, num = self.execute(sql, conn)
+            cursor, num = self.execute(sql, self.get_con())
             values = cursor.fetchall()
         except Exception as e:
             raise Exception("read files name failed!")

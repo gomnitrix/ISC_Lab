@@ -116,19 +116,24 @@ function start() {
             data = result.info;
         },
     });
-    setInterval(function () { get_data() }, 1000);
-    setInterval(function () { get_total() }, 1000);
-    setInterval(function () { get_riskflow() }, 1000);
-    setInterval(function () { get_rst() }, 1000);
-    setInterval(function () { get_app() }, 1000);
-     setInterval(function () { change() }, 1000);
+    t1 = setInterval(function () { get_data() }, 1000);
+    t2 = setInterval(function () { get_total() }, 1000);
+    t3 = setInterval(function () { get_riskflow() }, 1000);
+    t4 = setInterval(function () { get_rst() }, 1000);
+    t5 = setInterval(function () { get_app() }, 1000);
+    t6 = setInterval(function () { change() }, 1000);
 
 }
 
 
 function stop() {
 
-
+    t1.clearInterval
+    t2.clearInterval
+    t3.clearInterval
+    t4.clearInterval
+    t5.clearInterval
+    t6.clearInterval
     $.ajax({
         type: "GET",
         url: "./stop", //后台处理函数的url
