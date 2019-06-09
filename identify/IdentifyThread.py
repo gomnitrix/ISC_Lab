@@ -1,4 +1,4 @@
-from catch_package.catch_pkt import *
+from catch_package.catch_pkt import catch_packet,handle_packages
 from catch_package.catch_pkt import packet_Queue
 from catch_package.send_rst import *
 from network.config import DefaultConfig, opt
@@ -33,6 +33,15 @@ class CaptureThread(BasicThread):
             catch_packet(opt.capture_num)
 
 
+class HandleThread(BasicThread):
+    def __init__(self):
+        super(HandleThread, self).__init__()
+
+    def run(self):
+        while not self.if_stopped():
+            handle_packages()
+
+
 class Net1Thread(BasicThread):
     def __init__(self):
         super(Net1Thread, self).__init__()
@@ -45,10 +54,8 @@ class Net1Thread(BasicThread):
         while not self.if_stopped():
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net1_model))
             while results:
-                item = results.pop(0)  # (data,number)
-                kind = cates[item[1]]
-                data = item[0]
-                net1_pretation.put([data, kind, "00" if kind != "unknown" else "01"])
+                kind = cates[results.pop(0)]
+                net1_pretation.put((kind, "00" if kind != "unknown" else "01"))
 
 
 class Net2Thread(BasicThread):
@@ -64,9 +71,11 @@ class Net2Thread(BasicThread):
             results.extend(test(uq_opt=uq_opt, load_model_path=opt.net2_model, model="EncIdentNet"))
             while results:
 
-                item = results.pop(0)  # (number,ssl_00)
-                kind = cates[item[0]]
-                tag = tuple(item[1].split('_'))
+                if net1_pretation.empty():
+                    time.sleep(0.5)
+                    continue
+                kind = cates[results.pop(0)]
+                tag = net1_pretation.get()
                 net2_pretation.put((tag, (kind, "00" if kind != "unknown" else "10")))
                 ''' note:这里放进去的格式类似: (("ssh",00),("QQ",00))'''
 
@@ -88,6 +97,7 @@ class StaticThread(BasicThread):
                 #app_static[kind[1][0]] = app_static.get(kind[1][0])+1
                 #if kind[0][1] == '01' and kind[2]=='10':
                 if kind[0][1] == '01' and kind[1][1] == '10':
+
                     riskflow[0] = riskflow[0] + 1
                     if pkt[0] == 6:
                         theard_send_rst(pkt)

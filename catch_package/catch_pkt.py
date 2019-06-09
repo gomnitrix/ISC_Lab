@@ -1,13 +1,17 @@
 import queue
+from concurrent.futures import ThreadPoolExecutor
 
 import numpy as np
 import psutil
 from scapy.all import *
-import threading
+from network.config import opt
 
-raw_data_queue = queue.Queue()
+net1_datas = queue.Queue()
+net2_datas = queue.Queue()
 packet_Queue = queue.Queue()
+raw_package_queue = queue.Queue()
 cond = threading.Condition()
+lock = Lock()
 
 
 def get_netcard():
@@ -16,7 +20,7 @@ def get_netcard():
     info = psutil.net_if_addrs()
     for k, v in info.items():
         for item in v:
-            if item[0] == 2 and "192" in item[1]:
+            if item[0] == 2 and "172" in item[1]:
                 result = k
 
     return result
@@ -62,9 +66,23 @@ def packet_load(package):
                 formed_array = (img - amin) / (amax - amin)
                 data = (proto, src, dst, sport, dport, load)
 
-                raw_data_queue.put(formed_array)
+                lock.acquire()
+                net1_datas.put(formed_array)
+                net2_datas.put(formed_array)
                 packet_Queue.put(data)
+                lock.release()
                 cond.notifyAll()
+
+
+def put_packet(package):
+    raw_package_queue.put(package)
+
+
+def handle_packages():
+    with ThreadPoolExecutor(max_workers=opt.num_workers) as executor:
+        while not raw_package_queue.empty():
+            package = raw_package_queue.get()
+            executor.submit(packet_load, package)
 
 
 def catch_packet(num):

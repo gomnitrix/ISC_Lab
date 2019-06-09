@@ -3,8 +3,7 @@ import time
 import numpy as np
 from torch.utils import data
 
-from identify.global_queue import net1_pretation
-from catch_package.catch_pkt import raw_data_queue
+from catch_package.catch_pkt import net1_datas, net2_datas
 from network.config import opt
 from network.utils import DBHelper as Db
 
@@ -43,13 +42,13 @@ class DataFlow(data.Dataset):
 
 class TestDataFlow(data.Dataset):
     def __init__(self):
-        self.queue = raw_data_queue
+        self.queue = net1_datas
 
     def __getitem__(self, index):
         if self.queue.empty():
             print("empty!!")
             time.sleep(3)
-        return self.queue.get(), "test"
+        return self.queue.get(), ""
 
     def __len__(self):
         return self.queue.qsize()
@@ -57,14 +56,14 @@ class TestDataFlow(data.Dataset):
 
 class EncTestDataFlow(data.Dataset):
     def __init__(self):
-        self.queue = net1_pretation
+        self.queue = net2_datas
 
     def __getitem__(self, index):
         if self.queue.empty():
             print("empty!!")
             time.sleep(3)
         item = self.queue.get()
-        return item[0], item[1]+'_'+item[2]
+        return item, ""
 
     def __len__(self):
         return self.queue.qsize()

@@ -14,6 +14,7 @@ def test(uq_opt=opt, **kwargs):
     uq_opt.parse(kwargs)
     uq_opt.if_print = False
     flag = (uq_opt.model == "IdentNet")
+    threshold = uq_opt.net1_threshold if flag else uq_opt.net2_threshold
 
     # model
     model = getattr(models, uq_opt.model)()
@@ -27,29 +28,20 @@ def test(uq_opt=opt, **kwargs):
     test_loader = DataLoader(
         test_data,
         batch_size=uq_opt.batch_size,
-        shuffle=False,
-        # num_workers=opt.num_workers
+        shuffle=False
     )
     results = []
 
     for ii, (input_data, path) in enumerate(test_loader):
         if uq_opt.use_gpu:
             input_data = input_data.cuda()
-        temp_data = None
-        if flag:
-            temp_data = input_data
         pred = model(input_data)
         max_pre = pred.max(dim=1)
         probability = max_pre[0]
         label = max_pre[1].data.tolist()
         for i in range(len(probability)):
-            if probability[i] < uq_opt.threshold:
+            if probability[i] < threshold:
                 label[i] = uq_opt.cates
-        if not flag:
-            label = list(zip(label, path))  # (number,("ssl",00))
-
-        else:
-            label = list(zip(temp_data, label))
         results.extend(label)
     return results
 

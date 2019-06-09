@@ -28,7 +28,8 @@ class DefaultConfig(object):
     classes_dict = {"ssl": 0, "ssh": 1, "http": 2, "dns": 3, "ftp": 4, "mysql": 5}
     app_dict = {"QQ": 0, "WeChat": 1, "iqy": 2, "Thunder": 3, "NetEase": 4}
     cates = len(classes_dict)
-    threshold = 7
+    net1_threshold = 7
+    net2_threshold = 8
 
     if_print = True
     capture_num = 100
