@@ -71,8 +71,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'back_end.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {

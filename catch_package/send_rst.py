@@ -42,9 +42,7 @@ def send_rst(data):
     sport = data[3]
     global dport
     dport = data[4]
-    #signal.signal(signal.SIGINT,signal_handler)
     t1 = threading.Thread(target=sniff_recv)
-    # signal.signal(signal.SIGINT,signal_handler)
     t1.start()
     time.sleep(1)
 

@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'pkt_sum',views.pkt_sum, name='sum'),
     url(r'riskflow',views.get_riskflow, name='riskflow'),
     url(r'get_rst_num',views.get_rst, name='rst_num'),
+    url(r'dtl',views.riskflow_dtl, name='riskflow_dtl'),
 ]

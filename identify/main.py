@@ -1,7 +1,7 @@
 
 from identify.IdentifyThread import *
-
-
+from utils.DbHelper import read
+id= [0]
 
 class Identify:
     def __init__(self):
@@ -47,6 +47,17 @@ def get_riskflow_num():
 
 def get_rst_num():
     return rst_num[0]
+
+def get_riskflow_retail():
+
+    values = read(id[0])
+    print(values)
+    print(id[0])
+    length = len(values)
+    if length>0:
+        id[0] = values[length-1]['id']
+    return values
+
 
 ident = Identify()
 

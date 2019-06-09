@@ -3,8 +3,9 @@ from catch_package.catch_pkt import packet_Queue
 from catch_package.send_rst import *
 from network.config import DefaultConfig, opt
 from network.main import test
-from network.utils import DBHelper
+from network.utils import DbHelper
 from .global_queue import *
+lock = Lock()
 proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "unknown": 0}
 
 app_static = {"QQ": 0, "WeChat": 0, "iqy": 0, "Thunder": 0, "NetEase": 0,"unknown": 0 }
@@ -84,13 +85,13 @@ class StaticThread(BasicThread):
         super(StaticThread, self).__init__()
 
     def run(self):
-        db = DBHelper()
-        db.delete_all()
+
+
+
         while not self.if_stopped():
             while not packet_Queue.empty() and not net2_pretation.empty():
                 kind = net2_pretation.get()
                 pkt = packet_Queue.get()
-                print(kind)
                 proto_static[kind[0][0]] = proto_static.get(kind[0][0]) + 1
                 app_static[kind[1][0]] = app_static.get(kind[1][0])+1
                 if kind[0][1] == '01' and kind[1][1] == '10':
@@ -98,5 +99,6 @@ class StaticThread(BasicThread):
                     riskflow[0] = riskflow[0] + 1
                     if pkt[0] == 6:
                         theard_send_rst(pkt)
-                    db.write_data(proto=pkt[0],src_ip=pkt[1],dst_ip=pkt[2],sport=pkt[3],dport = pkt[4],load=pkt[5])
+                    DbHelper.theard_write(proto=pkt[0],src_ip=pkt[1],dst_ip=pkt[2],sport=int(pkt[3]),dport = int(pkt[4]))
+
 
