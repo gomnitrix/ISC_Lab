@@ -5,7 +5,6 @@ __metaclass__ = type
 
 class DBHelper:
     @staticmethod
-
     def get_con(if_dict=True):
         config = {
             'host': 'localhost',
@@ -17,7 +16,15 @@ class DBHelper:
             'cursorclass': pymysql.cursors.DictCursor,
         }
 
-
+        # config = {
+        #     'host': 'localhost',
+        #     'port': 3306,
+        #     'user': 'root',
+        #     'password': '1026Lijing-=',
+        #     'db': 'lsc_lab',
+        #     'charset': 'utf8',
+        #     'cursorclass': pymysql.cursors.DictCursor,
+        # }
         if not if_dict:
             config['cursorclass'] = pymysql.cursors.Cursor
 
@@ -36,8 +43,8 @@ class DBHelper:
 
     @staticmethod
     def close(conn,cursor=None):
-        # if conn:
-        #     conn.close()
+        if conn:
+            conn.close()
         if cursor:
             cursor.close()
 
@@ -90,24 +97,35 @@ class DBHelper:
             DBHelper.close(conn, cursor=cursor)
 
 db = DBHelper()
-
+conn_list = []
 def theard_write(proto,src_ip,dst_ip,sport,dport):
-   t = threading.Thread(target=db.write_data,args=(DBHelper.get_con(),proto,src_ip,dst_ip,sport,dport,))
+
+   conn = DBHelper.get_con()
+   conn_list.append(conn)
+   t = threading.Thread(target=db.write_data,args=(conn,proto,src_ip,dst_ip,sport,dport,))
    t.start()
    return
 
 
 def read(id):
-    values = db.read_data(id,DBHelper.get_con())
+    conn = DBHelper.get_con()
+    conn_list.append(conn)
+    values = db.read_data(id,conn)
     return values
 
 def delete():
-    db.delete_all(DBHelper.get_con())
+    conn = DBHelper.get_con()
+    conn_list.append(conn)
+    db.delete_all(conn)
     return
 
 def set_auto():
-    db.change_auto(DBHelper.get_con())
+
+    conn = DBHelper.get_con()
+    conn_list.append(conn)
+    db.change_auto(conn)
     return
 def db_close():
-    DBHelper.get_con().close()
+    for conn in conn_list:
+        conn.close()
     return
