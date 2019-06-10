@@ -3,7 +3,6 @@ from django.http import JsonResponse
 from identify.main import *
 from utils.DbHelper import *
 
-
 # Create your views here.
 def get_setting(request):
     return render(request, "inputs.html", locals())
@@ -16,6 +15,7 @@ def get_html(request):
 
 
 def start(request):
+    iptable_enable()
     ident.message_share()
     data = {"info": "start success"}
     return JsonResponse(data)
@@ -24,6 +24,7 @@ def start(request):
 def stop(request):
     ident.stop()
     db_close()
+    iptable_reset()
     data = {"info": "stop success"}
     return JsonResponse(data)
 

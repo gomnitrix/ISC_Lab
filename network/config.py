@@ -29,7 +29,7 @@ class DefaultConfig(object):
     app_dict = {"QQ": 0, "WeChat": 1, "iqy": 2, "Thunder": 3, "NetEase": 4}
     cates = len(classes_dict)
     net1_threshold = 7
-    net2_threshold = 8
+    net2_threshold = 9
 
     if_print = True
     capture_num = 100

@@ -1,4 +1,4 @@
-
+from catch_package.setiptable import enable,reset
 from identify.IdentifyThread import *
 from utils.DbHelper import read
 id= [0]
@@ -57,6 +57,11 @@ def get_riskflow_retail():
     if length>0:
         id[0] = values[length-1]['id']
     return values
+def iptable_enable():
+    enable()
+
+def iptable_reset():
+    reset()
 
 
 ident = Identify()

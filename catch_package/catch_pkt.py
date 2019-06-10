@@ -5,18 +5,19 @@ import numpy as np
 import psutil
 from scapy.all import *
 from network.config import opt
-
+from catch_package.setiptable import  *
 net1_datas = queue.Queue()
 net2_datas = queue.Queue()
 packet_Queue = queue.Queue()
 raw_package_queue = queue.Queue()
 cond = threading.Condition()
+FLT = []
+FLT_result = []
 lock = Lock()
 
 
 def get_netcard():
     result = ''
-
     info = psutil.net_if_addrs()
     for k, v in info.items():
         for item in v:
@@ -53,7 +54,17 @@ def packet_load(package):
             return
 
         if len(load) > 0:
+
+            length = len(FLT)
+            if length!=0 and load.__contains__(FLT[0]):
+                FLT_result.append(proto,src,dst,sport,dport)
+                if  "172" in src:
+                    deny_ip(dst)
+                else:
+                    deny_ip(src)
             int_ = [int(x) for x in bytes(load)]
+
+            print(bytes(load))
 
             if len(int_) < 1024:
                 int_.extend([0] * (1024 - len(int_)))
@@ -64,7 +75,6 @@ def packet_load(package):
                 amin, amax = img.min(), img.max()
                 formed_array = (img - amin) / (amax - amin)
                 data = (proto, src, dst, sport, dport, load)
-
                 lock.acquire()
                 net1_datas.put(formed_array)
                 net2_datas.put(formed_array)
@@ -87,3 +97,7 @@ def handle_packages():
 def catch_packet(num):
     dev = get_netcard()
     sniff(iface=dev, prn=packet_load, count=num)
+
+
+if __name__ == '__main__':
+    catch_packet()
