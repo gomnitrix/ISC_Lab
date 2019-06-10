@@ -33,10 +33,10 @@ function show() {
 
         ]
     };
-    var options = {
-        animation: false
-    }
-    new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData, options);
+    // var options = {
+    //     animation: false
+    // }
+    new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData);
 
 }
 
@@ -204,35 +204,35 @@ function start() {
 
         success: function (result) { //获取后台处理后传过来的result
             data = result.info;
+            flag = 1;
         },
     });
 
-    t1=setInterval(function () { get_data() }, 1000);
-    t2=setInterval(function () { get_total(); counterTotal(); }, 1000);
-    t3=setInterval(function () { get_riskflow(); counterRf(); }, 1000);
-    t4=setInterval(function () { get_rst(); counterReset(); }, 1000);
-
-    t5=setInterval(function () { get_app() }, 1000);
-    t6=setInterval(function () { change() }, 1000);
-    t7=setInterval(function () { dtl() }, 1000);
+    t1 = setInterval(function () { 
+        get_data();
+        get_total();
+        counterTotal();
+        get_riskflow(); 
+        counterRf();
+        get_rst(); 
+        counterReset();
+        get_app();
+        change();
+        dtl();
+    }, interval);
 }
 
 
 function stop() {
     window.alert("stop running");
     clearInterval(t1)
-    clearInterval(t2)
-    clearInterval(t3)
-    clearInterval(t4)
-    clearInterval(t5)
-    clearInterval(t6)
-    clearInterval(t7)
     $.ajax({
         type: "GET",
         url: "./stop", //后台处理函数的url
 
         success: function (result) { //获取后台处理后传过来的result
             data = result.info;
+            flag = 2;
         },
     });
 }
