@@ -5,6 +5,7 @@ __metaclass__ = type
 
 class DBHelper:
     @staticmethod
+
     def get_con(if_dict=True):
         config = {
             'host': 'localhost',
