@@ -129,14 +129,14 @@ function dtl()
               for(i=0;i<len;i++)
               {
                 var proto = ""
-//                if(values[i].proto=="6")
-//                {
-//                proto = "TCP"
-//                }
-//                else
-//                {
-//                 proto = "UDP"
-//                }
+                if(values[i].proto=="6")
+                {
+                proto = "TCP"
+                }
+                else
+                {
+                 proto = "UDP"
+                }
                 AddTableRow(proto,values[i].src_ip,values[i].dst_ip,values[i].sport,values[i].dport)
 
               }
