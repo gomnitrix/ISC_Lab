@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from identify.main import *
-
+from utils.DbHelper import *
 
 # Create your views here.
 def get_html(request):
+    DbHelper.delete()
+    DbHelper.set_auto()
     return render(request, "index.html", locals())
 
 
@@ -16,13 +18,13 @@ def start(request):
 
 def stop(request):
     ident.stop()
+    db_close()
     data = {"info": "stop success"}
     return JsonResponse(data)
 
 
 def proto_num(reguest):
     data = list(get_proto_static().values())
-    print(data)
     nums = {"data": data[0:6]}
     return JsonResponse(nums)
 
@@ -30,6 +32,7 @@ def proto_num(reguest):
 def pkt_sum(request):
     data = {"num": get_sum()}
     return JsonResponse(data)
+
 
 
 def get_riskflow(request):
@@ -43,5 +46,16 @@ def get_rst(request):
 
 def app_num(request):
     data = list(get_app_num().values())
-    nums = {"num": data[0:5]}
+    nums = {"num": data[0:6]}
     return JsonResponse(nums)
+
+def riskflow_dtl(request):
+
+    data = {}
+    values = get_riskflow_retail()
+    print(values)
+    if len(values) == 0:
+        data["data"] = 0;
+        return JsonResponse(data)
+    data["data"] = values
+    return JsonResponse(data)

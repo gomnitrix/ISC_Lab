@@ -1,6 +1,5 @@
 import pymysql
-import numpy as np
-
+import threading
 __metaclass__ = type
 
 
@@ -10,12 +9,14 @@ class DBHelper:
         config = {
             'host': 'localhost',
             'port': 3306,
-            'user': '1160300103',
-            'password': '19981017',
-            'db': 'ics_db',
+            'user': 'root',
+            'password': '1026Lijing-=',
+            'db': 'lsc_lab',
             'charset': 'utf8',
             'cursorclass': pymysql.cursors.DictCursor,
         }
+
+
         if not if_dict:
             config['cursorclass'] = pymysql.cursors.Cursor
 
@@ -23,55 +24,89 @@ class DBHelper:
         return conn
 
     @staticmethod
-    def execute(sql, conn, args=None):
+    def execute(sql,conn, args=None):
+
         if not conn:
             raise Exception("connect failed")
         cursor = conn.cursor()  # (pymysql.cursors.DictCursor)
         num = cursor.execute(sql, args)
+
         return cursor, num
 
     @staticmethod
-    def close(conn=None, cursor=None):
-        if conn:
-            conn.close()
+    def close(conn,cursor=None):
+        # if conn:
+        #     conn.close()
         if cursor:
             cursor.close()
 
-    def write_data(self, name, data, label, conn):
-        cursor = None
+    def write_data(self,conn,proto,src_ip,dst_ip,sport,dport):
+        cursor = None,
         try:
-            sql = "insert into app_datas (data_name,data,label) values (%s, %s, %s)"
-            cursor, num = self.execute(sql, args=(name, data, label), conn=conn)
+            sql = "insert into traffic_recognition_high_risk_traffic(proto,src_ip,dst_ip,sport,dport) values (%s, %s, %s, %s, %s)"
+            cursor, num = self.execute(sql, args=(proto,src_ip,dst_ip,sport,dport), conn=conn)
         except Exception as e:
             conn.rollback()
             raise Exception("insert failed!")
         finally:
             conn.commit()
-            DBHelper.close(cursor=cursor)
+            DBHelper.close(conn,cursor=cursor)
 
-    def read_data(self, name, conn):
-        sql = "select data,label from app_datas where data_name = '{}'".format(name)
+
+    def  delete_all(self,conn):
+        cursor = None
+        try:
+            sql = "delete from traffic_recognition_high_risk_traffic"
+            cursor, num = self.execute(sql, conn=conn)
+        except Exception as e:
+            conn.rollback()
+            raise Exception("delete failed!")
+        finally:
+            conn.commit()
+            DBHelper.close(conn, cursor=cursor)
+
+    def read_data(self,id,conn):
+        sql = "select * from  traffic_recognition_high_risk_traffic where id > " + str(id)
         cursor = None
         try:
             cursor, num = self.execute(sql, conn=conn)
             values = cursor.fetchall()
-            data = np.frombuffer(values[0][0], dtype='f')
-            data = data.reshape((1, 32, 32))
-            label = values[0][1]
         except Exception as e:
             raise Exception("read failed!")
         finally:
-            DBHelper.close(cursor=cursor)
-        return data, label
-
-    def get_files(self, conn):
-        sql = "select data_name from app_datas"
+            DBHelper.close(conn,cursor=cursor)
+        return values
+    def change_auto(self,conn):
         cursor = None
         try:
-            cursor, num = self.execute(sql, conn)
-            values = cursor.fetchall()
+            sql = "alter table  traffic_recognition_high_risk_traffic auto_increment=1"
+            cursor, num = self.execute(sql, conn=conn)
         except Exception as e:
-            raise Exception("read files name failed!")
+            conn.rollback()
+            raise Exception("change_auto failed")
         finally:
-            DBHelper.close(cursor=cursor)
-        return values
+            conn.commit()
+            DBHelper.close(conn, cursor=cursor)
+
+db = DBHelper()
+
+def theard_write(proto,src_ip,dst_ip,sport,dport):
+   t = threading.Thread(target=db.write_data,args=(DBHelper.get_con(),proto,src_ip,dst_ip,sport,dport,))
+   t.start()
+   return
+
+
+def read(id):
+    values = db.read_data(id,DBHelper.get_con())
+    return values
+
+def delete():
+    db.delete_all(DBHelper.get_con())
+    return
+
+def set_auto():
+    db.change_auto(DBHelper.get_con())
+    return
+def db_close():
+    DBHelper.get_con().close()
+    return

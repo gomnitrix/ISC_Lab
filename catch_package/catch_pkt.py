@@ -53,7 +53,6 @@ def packet_load(package):
             return
 
         if len(load) > 0:
-
             int_ = [int(x) for x in bytes(load)]
 
             if len(int_) < 1024:

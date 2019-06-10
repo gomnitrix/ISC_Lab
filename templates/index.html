@@ -33,13 +33,21 @@
 	<script src="{% static 'js/Chart.js' %}"></script>
 	<script src="{% static 'js/watch.js' %}"></script>
 	<script async language="JavaScript">
+
+	    var time = new Date();
+	    var h = time.getHours();
+	    var m = time.getMinutes();
+	    var s = time.getSeconds();
+	    var T = h+":"+m+":"+s;
+
 		window.data = [0, 0, 0, 0, 0, 0];
 
 		window.total = 0;
 		window.rf = 0;
 		window.blocked = 0;
 		window.reset = 0;
-		window.time = [0, 1, 2, 3, 4, 5];
+		window.rkf_dtl = []
+		window.times = [T, T, T, T, T, T];
 		window.app_num = [0, 0, 0, 0, 0, 0];
 		window.app_num2 = [0, 0, 0, 0, 0];
 		window.qq = [0, 0, 0, 0, 0, 0];
@@ -180,7 +188,7 @@
 							</div>
 							<div class="four-text">
 								<h3>Reseted</h3>
-								<h4 id="rst">26</h4><!-- 这里传变量-->
+								<h4 id="rst">0</h4><!-- 这里传变量-->
 							</div>
 						</div>
 					</div>
@@ -197,7 +205,7 @@
 
 							<script async language="JavaScript">
 
-								function show() {
+							function show() {
 
 									var barChartData = {
 										animation: false,
@@ -223,7 +231,7 @@
 									new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData, options);
 
 								}
-								setInterval(function () { show() }, 1000);
+								show()
 
 							</script>
 						</div>
@@ -281,7 +289,7 @@
 
 													table tbody {
 														display: block;
-														height: 400px;
+														height: 350px;
 														overflow-y: scroll;
 													}
 
@@ -309,21 +317,15 @@
 													class='am-table am-table-bd am-table-bdrs am-table-striped am-table-hover'>
 													<thead>
 														<tr>
+															<th>PROTO</th>
 															<th>SRC_IP</th>
 															<th>DST_IP</th>
 															<th>SPORT</th>
 															<th>DPORT</th>
-															<th>LOAD</th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
-															<td>172.0.0.1</td>
-															<td>116.52.42.11</td>
-															<td>80</td>
-															<td>80</td>
-															<td>9999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999999
-															</td>
 														</tr>
 													</tbody>
 												</table>
