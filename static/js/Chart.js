@@ -153,13 +153,13 @@ window.Chart = function(context){
 
 
 	//High pixel density displays - multiply the size of the canvas height/width by the device pixel ratio, then scale.
-	if (window.devicePixelRatio) {
-		context.canvas.style.width = width + "px";
-		context.canvas.style.height = height + "px";
-		context.canvas.height = height * window.devicePixelRatio;
-		context.canvas.width = width * window.devicePixelRatio;
-		context.scale(window.devicePixelRatio, window.devicePixelRatio);
-	}
+	// if (window.devicePixelRatio) {
+	// 	context.canvas.style.width = width + "px";
+	// 	context.canvas.style.height = height + "px";
+	// 	context.canvas.height = height * window.devicePixelRatio;
+	// 	context.canvas.width = width * window.devicePixelRatio;
+	// 	context.scale(window.devicePixelRatio, window.devicePixelRatio);
+	// }
 
 	
 	this.Bar = function(data,options){

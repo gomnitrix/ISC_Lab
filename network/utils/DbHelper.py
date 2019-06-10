@@ -43,10 +43,9 @@ class DBHelper:
         return cursor, num
 
     @staticmethod
-
-    def close(conn,cursor=None):
-        # if conn:
-        #     conn.close()
+    def close(conn, cursor=None):
+        if conn:
+            conn.close()
         if cursor:
             cursor.close()
 
@@ -60,8 +59,7 @@ class DBHelper:
             raise Exception("insert failed!")
         finally:
             conn.commit()
-            conn.close()
-            DBHelper.close(conn=None,cursor=cursor)
+            DBHelper.close(conn=None, cursor=cursor)
 
     def delete_all(self, conn):
         cursor = None
@@ -105,10 +103,10 @@ conn_list = []
 
 
 def theard_write(proto, src_ip, dst_ip, sport, dport):
-   conn = DBHelper.get_con()
-   t = threading.Thread(target=db.write_data,args=(conn,proto,src_ip,dst_ip,sport,dport,))
-   t.start()
-   return
+    conn = DBHelper.get_con()
+    t = threading.Thread(target=db.write_data, args=(conn, proto, src_ip, dst_ip, sport, dport,))
+    t.start()
+    return
 
 
 def read(id):

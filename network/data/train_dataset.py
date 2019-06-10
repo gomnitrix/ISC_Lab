@@ -1,7 +1,7 @@
 import numpy as np
 from scapy.all import *
 
-from utils import DBHelper as Db
+from utils import TDBHelper as Db
 
 
 def pretreatment(classes=None):
