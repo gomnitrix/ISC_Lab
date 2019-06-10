@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'riskflow',views.get_riskflow, name='riskflow'),
     url(r'get_rst_num',views.get_rst, name='rst_num'),
     url(r'dtl',views.riskflow_dtl, name='riskflow_dtl'),
+    url(r'setting', views.get_setting, name='setting'),
 ]

@@ -5,6 +5,10 @@ from utils.DbHelper import *
 
 
 # Create your views here.
+def get_setting(request):
+    return render(request, "inputs.html", locals())
+
+
 def get_html(request):
     DbHelper.delete()
     DbHelper.set_auto()
