@@ -203,6 +203,7 @@ function change() {
 
 }
 function start() {
+    window.alert("start run!");
     $.ajax({
         type: "GET",
         url: "./start", //后台处理函数的url
@@ -224,7 +225,7 @@ function start() {
 
 
 function stop() {
-
+    window.alert("stop run!");
     t1.clearInterval
     t2.clearInterval
     t3.clearInterval
