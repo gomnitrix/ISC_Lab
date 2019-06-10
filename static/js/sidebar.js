@@ -125,14 +125,12 @@ function dtl() {
                 var len = values.length
                 for (i = 0; i < len; i++) {
                     var proto = ""
-                    //                if(values[i].proto=="6")
-                    //                {
-                    //                proto = "TCP"
-                    //                }
-                    //                else
-                    //                {
-                    //                 proto = "UDP"
-                    //                }
+                    if (values[i].proto == "6") {
+                        proto = "TCP"
+                    }
+                    else {
+                        proto = "UDP"
+                    }
                     AddTableRow(proto, values[i].src_ip, values[i].dst_ip, values[i].sport, values[i].dport)
 
                 }
@@ -199,7 +197,7 @@ function change() {
 
 }
 function start() {
-    window.alert("start run!");
+    window.alert("start running");
     $.ajax({
         type: "GET",
         url: "./start", //后台处理函数的url
@@ -221,14 +219,14 @@ function start() {
 
 
 function stop() {
-    window.alert("stop run!");
-    t1.clearInterval
-    t2.clearInterval
-    t3.clearInterval
-    t4.clearInterval
-    t5.clearInterval
-    t6.clearInterval
-    t7.clearInterval
+    window.alert("stop running");
+    clearInterval(t1)
+    clearInterval(t2)
+    clearInterval(t3)
+    clearInterval(t4)
+    clearInterval(t5)
+    clearInterval(t6)
+    clearInterval(t7)
     $.ajax({
         type: "GET",
         url: "./stop", //后台处理函数的url
