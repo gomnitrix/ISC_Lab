@@ -102,10 +102,10 @@ class StaticThread(BasicThread):
                         theard_send_rst(pkt)
                     else:
                         block[0] = block[0] + 1
-                        if "172" in pkt[1]:
-                            deny_ip(pkt[2])
-                        else:
-                            deny_ip(pkt[1])
+                        # if "172" in pkt[1]:
+                        #     deny_ip(pkt[2])
+                        # else:
+                        #     deny_ip(pkt[1])
                     DbHelper.theard_write(proto=pkt[0],src_ip=pkt[1],dst_ip=pkt[2],sport=int(pkt[3]),dport = int(pkt[4]))
 
 

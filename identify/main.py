@@ -1,7 +1,11 @@
+
+
 from catch_package.setiptable import enable,reset
 from identify.IdentifyThread import *
 from utils.DbHelper import read
-id= [0]
+
+id = [0]
+
 
 class Identify:
     def __init__(self):
@@ -17,6 +21,7 @@ class Identify:
         net1_thread = Net1Thread()
         net2_thread = Net2Thread()
         staticthread = StaticThread()
+        self.thread_list = []
         self.thread_list.extend([capture_thread, handle_thread, net1_thread, net2_thread, staticthread])
 
         flag = True
@@ -31,9 +36,9 @@ class Identify:
 def get_proto_static():
     return proto_static
 
+
 def get_app_num():
     return app_static
-
 
 
 def get_sum():
@@ -53,14 +58,14 @@ def get_rst_num():
     return rst_num[0]
 
 
-def get_riskflow_retail():
 
+def get_riskflow_retail():
     values = read(id[0])
     print(values)
     print(id[0])
     length = len(values)
-    if length>0:
-        id[0] = values[length-1]['id']
+    if length > 0:
+        id[0] = values[length - 1]['id']
     return values
 def iptable_enable():
     enable()

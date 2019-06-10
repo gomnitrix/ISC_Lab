@@ -15,7 +15,7 @@ def get_html(request):
 
 
 def start(request):
-    iptable_enable()
+    #iptable_enable()
     ident.message_share()
     data = {"info": "start success"}
     return JsonResponse(data)
@@ -23,7 +23,7 @@ def start(request):
 
 def stop(request):
     ident.stop()
-    iptable_reset()
+    #iptable_reset()
     data = {"info": "stop success"}
     return JsonResponse(data)
 
@@ -63,7 +63,6 @@ def app_num(request):
 def riskflow_dtl(request):
     data = {}
     values = get_riskflow_retail()
-    print(values)
     if len(values) == 0:
         data["data"] = 0
         return JsonResponse(data)

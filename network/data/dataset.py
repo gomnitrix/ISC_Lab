@@ -5,7 +5,7 @@ from torch.utils import data
 
 from catch_package.catch_pkt import net1_datas, net2_datas
 from network.config import opt
-from network.utils import DBHelper as Db
+from network.utils import TDBHelper as Db
 
 
 class DataFlow(data.Dataset):

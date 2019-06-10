@@ -208,14 +208,14 @@ function start() {
         },
     });
 
-    t1 = setInterval(function () { 
+    t1 = setInterval(function () {
         get_data();
         get_total();
         counterTotal();
-        get_riskflow(); 
-        counterRf();
-        get_rst(); 
-        counterReset();
+        get_riskflow();
+        // counterRf();
+        get_rst();
+        // counterReset();
         get_app();
         change();
         dtl();
@@ -226,13 +226,13 @@ function start() {
 function stop() {
     window.alert("stop running");
     clearInterval(t1)
+    flag = 2;
     $.ajax({
         type: "GET",
         url: "./stop", //后台处理函数的url
 
         success: function (result) { //获取后台处理后传过来的result
             data = result.info;
-            flag = 2;
         },
     });
 }
@@ -241,7 +241,10 @@ function stop() {
 function counterTotal() {
     var element = document.getElementById("total");
     step = Math.round((total - element.value) / 20)
-
+    var element2 = document.getElementById("rf");
+    step2 = Math.round((rf - element2.value) / 20)
+    var element3 = document.getElementById("rst");
+    step3 = Math.round((reset - element3.value) / 20)
     setInterval(function () {
         val = element.value;
         val = val + step
@@ -249,9 +252,23 @@ function counterTotal() {
             element.innerHTML = val;
         } else {
             element.innerHTML = total;
-            clearInterval();
+            val2 = element2.value;
+            val2 = val2 + step2
+            if (val2 < rf) {
+                element2.innerHTML = val2;
+            } else {
+                element2.innerHTML = rf;
+                val3 = element3.value;
+                val3 = val3 + step3
+                if (val3 < reset) {
+                    element3.innerHTML = val3;
+                } else {
+                    element3.innerHTML = reset;
+                    clearInterval();
+                }
+            }
         }
-    }, 30);
+    }, 15);
 }
 
 function counterRf() {
