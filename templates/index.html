@@ -71,14 +71,14 @@
 					<div class="scrollbar scrollbar1" tabindex="5000" style="overflow: hidden; outline: none;">
 						<ul class="nav in" id="side-menu">
 							<li>
-								<a href="index.html" class="active"><i class="fa fa-home nav_icon"></i>
+								<a href="{%  index.html" class="active"><i class="fa fa-home nav_icon"></i>
 									<figure class="icons">Home
 										<canvas id="clear-day" width="15" height="15"></canvas>
 									</figure>
 								</a>
 							</li>
 							<li>
-								<a href="inputs.html"><i class="fa fa-cogs nav_icon"></i>Setting</a>
+								<a href="{% url 'setting' %}"><i class="fa fa-cogs nav_icon"></i>Setting</a>
 							</li>
 							<li>
 								<a class="Operation" onclick="start()"><i

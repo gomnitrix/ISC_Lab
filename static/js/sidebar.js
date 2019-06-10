@@ -219,7 +219,7 @@ function start() {
 
     setInterval(function () { get_app() }, 1000);
     setInterval(function () { change() }, 1000);
-    setInterval(function () { dtl() }, 2000);
+    setInterval(function () { dtl() }, 1000);
 }
 
 
