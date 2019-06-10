@@ -34,11 +34,11 @@
 	<script src="{% static 'js/watch.js' %}"></script>
 	<script async language="JavaScript">
 
-	    var time = new Date();
-	    var h = time.getHours();
-	    var m = time.getMinutes();
-	    var s = time.getSeconds();
-	    var T = h+":"+m+":"+s;
+		var time = new Date();
+		var h = time.getHours();
+		var m = time.getMinutes();
+		var s = time.getSeconds();
+		var T = h + ":" + m + ":" + s;
 
 		window.data = [0, 0, 0, 0, 0, 0];
 
@@ -204,35 +204,7 @@
 							<canvas id="bar1" height="390" width="1093" style="width: 875px; height: 312px;"></canvas>
 
 							<script async language="JavaScript">
-
-							function show() {
-
-									var barChartData = {
-										animation: false,
-										labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
-										datasets: [
-											{
-
-												data: data,/*这里传变量*/
-												backgroundColor: [
-													'rgba(255, 99, 132, 0.6)',
-													'rgba(54, 162, 235, 0.6)',
-													'rgba(255, 206, 86, 0.6)',
-													'rgba(75, 192, 192, 0.6)',
-													'rgba(153, 102, 255, 0.6)',
-													'rgba(255, 159, 64, 0.6)']
-											}
-
-										]
-									};
-									var options = {
-										animation: false
-									}
-									new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData, options);
-
-								}
-								show()
-
+								show();
 							</script>
 						</div>
 					</div>
