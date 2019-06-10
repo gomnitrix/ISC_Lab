@@ -23,7 +23,6 @@ def start(request):
 
 def stop(request):
     ident.stop()
-    db_close()
     iptable_reset()
     data = {"info": "stop success"}
     return JsonResponse(data)
@@ -42,6 +41,11 @@ def pkt_sum(request):
 
 def get_riskflow(request):
     data = {"num": get_riskflow_num()}
+    return JsonResponse(data)
+
+
+def get_block(request):
+    data = {"num": get_block()}
     return JsonResponse(data)
 
 

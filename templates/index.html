@@ -34,14 +34,15 @@
 	<script src="{% static 'js/watch.js' %}"></script>
 	<script async language="JavaScript">
 
-	    var time = new Date();
-	    var h = time.getHours();
-	    var m = time.getMinutes();
-	    var s = time.getSeconds();
-	    var T = h+":"+m+":"+s;
+		var time = new Date();
+		var h = time.getHours();
+		var m = time.getMinutes();
+		var s = time.getSeconds();
+		var T = h + ":" + m + ":" + s;
 
 		window.data = [0, 0, 0, 0, 0, 0];
-
+		window.interval = 3000;
+		window.flag = 0;
 		window.total = 0;
 		window.rf = 0;
 		window.blocked = 0;
@@ -55,7 +56,6 @@
 		window.iqy = [0, 0, 0, 0, 0, 0];
 		window.tdr = [0, 0, 0, 0, 0, 0];
 		window.we = [0, 0, 0, 0, 0, 0];
-
 	</script>
 	<script src="{% static 'js/sidebar.js' %}"></script>
 </head>
@@ -70,7 +70,7 @@
 					<div class="scrollbar scrollbar1" tabindex="5000" style="overflow: hidden; outline: none;">
 						<ul class="nav in" id="side-menu">
 							<li>
-								<a href="{%  index.html" class="active"><i class="fa fa-home nav_icon"></i>
+								<a href="{% url 'html' %}" class="active"><i class="fa fa-home nav_icon"></i>
 									<figure class="icons">Home
 										<canvas id="clear-day" width="15" height="15"></canvas>
 									</figure>
@@ -140,7 +140,7 @@
 		</div>
 		<!-- //header-ends -->
 
-
+		{% block content %}
 		<div id="page-wrapper" style="min-height: 703px;">
 			<div class="main-page">
 				<div class="four-grids">
@@ -204,35 +204,7 @@
 							<canvas id="bar1" height="390" width="1093" style="width: 875px; height: 312px;"></canvas>
 
 							<script async language="JavaScript">
-
-							function show() {
-
-									var barChartData = {
-										animation: false,
-										labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
-										datasets: [
-											{
-
-												data: data,/*这里传变量*/
-												backgroundColor: [
-													'rgba(255, 99, 132, 0.6)',
-													'rgba(54, 162, 235, 0.6)',
-													'rgba(255, 206, 86, 0.6)',
-													'rgba(75, 192, 192, 0.6)',
-													'rgba(153, 102, 255, 0.6)',
-													'rgba(255, 159, 64, 0.6)']
-											}
-
-										]
-									};
-									var options = {
-										animation: false
-									}
-									new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData, options);
-
-								}
-								show()
-
+								show();
 							</script>
 						</div>
 					</div>
@@ -339,7 +311,7 @@
 				</div>
 			</div>
 		</div>
-
+		{% endblock %}
 
 		<div class="copy-section">
 			<p>Copyright © 2019.ICS Lab, All rights reserved. Author:高博为 </p>

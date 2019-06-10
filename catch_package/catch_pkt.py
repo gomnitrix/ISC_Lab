@@ -63,9 +63,6 @@ def packet_load(package):
                 else:
                     deny_ip(src)
             int_ = [int(x) for x in bytes(load)]
-
-            print(bytes(load))
-
             if len(int_) < 1024:
                 int_.extend([0] * (1024 - len(int_)))
             else:

@@ -11,7 +11,7 @@ proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "
 
 app_static = {"QQ": 0, "WeChat": 0, "iqy": 0, "Thunder": 0, "NetEase": 0,"unknown": 0 }
 riskflow = [0]
-
+block = [0]
 
 class BasicThread(threading.Thread):
     def __init__(self):
@@ -101,6 +101,7 @@ class StaticThread(BasicThread):
                     if pkt[0] == 6:
                         theard_send_rst(pkt)
                     else:
+                        block[0] = block[0] + 1
                         if "172" in pkt[1]:
                             deny_ip(pkt[2])
                         else:

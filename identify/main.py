@@ -45,8 +45,13 @@ def get_riskflow_num():
     return riskflow[0]
 
 
+def get_block_num():
+    return block[0]
+
+
 def get_rst_num():
     return rst_num[0]
+
 
 def get_riskflow_retail():
 

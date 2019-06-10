@@ -1,4 +1,4 @@
-
+var t1;
 function get_data() {
     $.ajax({
         type: "GET",
@@ -15,30 +15,30 @@ function get_data() {
 
 function show() {
 
-									var barChartData = {
-										animation: false,
-										labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
-										datasets: [
-											{
+    var barChartData = {
+        animation: false,
+        labels: ["SSL", "SSH", "HTTP", "DNS", "FTP", "MYSQL"],/*这里传变量（如果协议种类变化的话）*/
+        datasets: [
+            {
 
-												data: data,/*这里传变量*/
-												backgroundColor: [
-													'rgba(255, 99, 132, 0.6)',
-													'rgba(54, 162, 235, 0.6)',
-													'rgba(255, 206, 86, 0.6)',
-													'rgba(75, 192, 192, 0.6)',
-													'rgba(153, 102, 255, 0.6)',
-													'rgba(255, 159, 64, 0.6)']
-											}
+                data: data,/*这里传变量*/
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)']
+            }
 
-										]
-									};
-									var options = {
-										animation: false
-									}
-									new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData, options);
+        ]
+    };
+    // var options = {
+    //     animation: false
+    // }
+    new Chart(document.getElementById("bar1").getContext("2d")).Bar(barChartData);
 
-								}
+}
 
 function get_total() {
     $.ajax({
@@ -93,25 +93,24 @@ function get_app() {
 
     });
 }
-function AddTableRow(proto,src_ip,dst_ip,sport,dport){
+function AddTableRow(proto, src_ip, dst_ip, sport, dport) {
 
-   var tab=document.getElementById('tab1')
-   var len=tab.rows.length;//获取表格的行数
-   var x = tab.insertRow(len);
-   var y=x.insertCell(0);
-   var z=x.insertCell(1);
-   var a=x.insertCell(2);
-   var b=x.insertCell(3);
-   var c=x.insertCell(4);
-	y.innerHTML=proto;
-	z.innerHTML=src_ip;
-	a.innerHTML=dst_ip;
-    b.innerHTML=sport;
-    c.innerHTML=dport;
+    var tab = document.getElementById('tab1')
+    var len = tab.rows.length;//获取表格的行数
+    var x = tab.insertRow(len);
+    var y = x.insertCell(0);
+    var z = x.insertCell(1);
+    var a = x.insertCell(2);
+    var b = x.insertCell(3);
+    var c = x.insertCell(4);
+    y.innerHTML = proto;
+    z.innerHTML = src_ip;
+    a.innerHTML = dst_ip;
+    b.innerHTML = sport;
+    c.innerHTML = dport;
 }
-function dtl()
-{
-  $.ajax({
+function dtl() {
+    $.ajax({
         type: "GET",
         url: "./dtl", //后台处理函数的url
 
@@ -119,27 +118,22 @@ function dtl()
         success: function (result) { //获取后台处理后传过来的result
             var values = result.data
 
-            if(values==0)
-            {
-               rkf_dtl = []
+            if (values == 0) {
+                rkf_dtl = []
             }
-            else
-            {
-              var len = values.length
-              for(i=0;i<len;i++)
-              {
-                var proto = ""
-                if(values[i].proto=="6")
-                {
-                proto = "TCP"
-                }
-                else
-                {
-                 proto = "UDP"
-                }
-                AddTableRow(proto,values[i].src_ip,values[i].dst_ip,values[i].sport,values[i].dport)
+            else {
+                var len = values.length
+                for (i = 0; i < len; i++) {
+                    var proto = ""
+                    if (values[i].proto == "6") {
+                        proto = "TCP"
+                    }
+                    else {
+                        proto = "UDP"
+                    }
+                    AddTableRow(proto, values[i].src_ip, values[i].dst_ip, values[i].sport, values[i].dport)
 
-              }
+                }
             }
             console.log(rkf_dtl)
 
@@ -189,11 +183,11 @@ function change() {
     we[5] = app_num2[4]
 
     var time = new Date();
-	    var h = time.getHours();
-	    var m = time.getMinutes();
-	    var s = time.getSeconds();
-	    var T = h+":"+m+":"+s;
-	times[0] = times[1]
+    var h = time.getHours();
+    var m = time.getMinutes();
+    var s = time.getSeconds();
+    var T = h + ":" + m + ":" + s;
+    times[0] = times[1]
     times[1] = times[2]
     times[2] = times[3]
     times[3] = times[4]
@@ -203,40 +197,42 @@ function change() {
 
 }
 function start() {
+    window.alert("start running");
     $.ajax({
         type: "GET",
         url: "./start", //后台处理函数的url
 
         success: function (result) { //获取后台处理后传过来的result
             data = result.info;
+            flag = 1;
         },
     });
 
-    setInterval(function () { get_data() }, 1000);
-    setInterval(function () { get_total();counterTotal(); }, 1000);
-    setInterval(function () { get_riskflow();counterRf(); }, 1000);
-    setInterval(function () { get_rst();counterReset(); }, 1000);
-
-    setInterval(function () { get_app() }, 1000);
-    setInterval(function () { change() }, 1000);
-    setInterval(function () { dtl() }, 1000);
+    t1 = setInterval(function () { 
+        get_data();
+        get_total();
+        counterTotal();
+        get_riskflow(); 
+        counterRf();
+        get_rst(); 
+        counterReset();
+        get_app();
+        change();
+        dtl();
+    }, interval);
 }
 
 
 function stop() {
-
-    t1.clearInterval
-    t2.clearInterval
-    t3.clearInterval
-    t4.clearInterval
-    t5.clearInterval
-    t6.clearInterval
+    window.alert("stop running");
+    clearInterval(t1)
     $.ajax({
         type: "GET",
         url: "./stop", //后台处理函数的url
 
         success: function (result) { //获取后台处理后传过来的result
             data = result.info;
+            flag = 2;
         },
     });
 }
@@ -268,6 +264,7 @@ function counterRf() {
             element.innerHTML = val;
         } else {
             element.innerHTML = rf;
+
             clearInterval();
         }
     }, 30);

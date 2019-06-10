@@ -1,5 +1,6 @@
 import pymysql
 import threading
+
 __metaclass__ = type
 
 
@@ -19,9 +20,9 @@ class DBHelper:
         # config = {
         #     'host': 'localhost',
         #     'port': 3306,
-        #     'user': 'root',
-        #     'password': '1026Lijing-=',
-        #     'db': 'lsc_lab',
+        #     'user': '1160300103',
+        #     'password': '19981017',
+        #     'db': 'ICS_Lab',
         #     'charset': 'utf8',
         #     'cursorclass': pymysql.cursors.DictCursor,
         # }
@@ -32,7 +33,7 @@ class DBHelper:
         return conn
 
     @staticmethod
-    def execute(sql,conn, args=None):
+    def execute(sql, conn, args=None):
 
         if not conn:
             raise Exception("connect failed")
@@ -45,13 +46,14 @@ class DBHelper:
         return cursor, num
 
     @staticmethod
+
     def close(conn,cursor=None):
         if conn:
             conn.close()
         if cursor:
             cursor.close()
 
-    def write_data(self,conn,proto,src_ip,dst_ip,sport,dport):
+    def write_data(self, conn, proto, src_ip, dst_ip, sport, dport):
         cursor = None,
         try:
             sql = "insert into traffic_recognition_high_risk_traffic(proto,src_ip,dst_ip,sport,dport) values (%s, %s, %s, %s, %s)"
@@ -78,9 +80,11 @@ class DBHelper:
 
         finally:
             conn.commit()
-            DBHelper.close(conn=conn, cursor=cursor)
 
-    def  delete_all(self,conn):
+            DBHelper.close(conn=None,cursor=cursor)
+
+    def delete_all(self, conn):
+
         cursor = None
         try:
             sql = "delete from traffic_recognition_high_risk_traffic"
@@ -105,20 +109,8 @@ class DBHelper:
 
             DBHelper.close(conn, cursor=cursor)
 
-    def read_data(self,id,conn):
+    def read_data(self, id, conn):
         sql = "select * from  traffic_recognition_high_risk_traffic where id > " + str(id)
-        cursor = None
-        try:
-            cursor, num = self.execute(sql, conn=conn)
-            values = cursor.fetchall()
-        except Exception as e:
-            raise Exception("read failed!")
-        finally:
-            DBHelper.close(conn,cursor=cursor)
-        return values
-
-    def read_bl(self, id, conn):
-        sql = "select id from traffic_recognition_black_list where id > " + str(id)
         cursor = None
         try:
             cursor, num = self.execute(sql, conn=conn)
@@ -129,7 +121,21 @@ class DBHelper:
             DBHelper.close(conn, cursor=cursor)
         return values
 
-    def change_auto(self,conn):
+
+    def read_bl(self, id, conn):
+        sql = "select ip from traffic_recognition_black_list where id > " + str(id)
+        cursor = None
+        try:
+            cursor, num = self.execute(sql, conn=conn)
+            values = cursor.fetchall()
+        except Exception as e:
+            raise Exception("read failed!")
+        finally:
+            DBHelper.close(conn, cursor=cursor)
+        return values
+
+
+    def change_auto(self, conn):
         cursor = None
         try:
             sql = "alter table  traffic_recognition_high_risk_traffic auto_increment=1"
@@ -158,8 +164,10 @@ db = DBHelper()
 conn_list = []
 
 
-def theard_write(proto,src_ip,dst_ip,sport,dport):
+db = DBHelper()
+conn_list = []
 
+def theard_write(proto, src_ip, dst_ip, sport, dport):
    conn = DBHelper.get_con()
    t = threading.Thread(target=db.write_data,args=(conn,proto,src_ip,dst_ip,sport,dport,))
    t.start()
@@ -167,7 +175,6 @@ def theard_write(proto,src_ip,dst_ip,sport,dport):
 
 
 def theard_write_bl(ip):
-
    conn = DBHelper.get_con()
    t = threading.Thread(target=db.write_bl,args=(conn,ip,))
    t.start()
@@ -177,32 +184,30 @@ def theard_write_bl(ip):
 def read(id):
     conn = DBHelper.get_con()
     conn_list.append(conn)
-    values = db.read_bl(id,conn)
+    values = db.read_data(id,conn)
     return values
 
 
 def read_bl(id):
     conn = DBHelper.get_con()
     conn_list.append(conn)
-    values = db.read_data(id, conn)
+    values = db.read_bl(id, conn)
     return values
+
 
 def delete():
     conn = DBHelper.get_con()
+    conn2 = DBHelper.get_con()
     conn_list.append(conn)
     db.delete_all(conn)
-    db.delete_bl(conn)
+    db.delete_bl(conn2)
     return
+
 
 def set_auto():
-
     conn = DBHelper.get_con()
+    conn2 = DBHelper.get_con()
     conn_list.append(conn)
     db.change_auto(conn)
-    db.change_auto_bl(conn)
-    return
-
-def db_close():
-    for conn in conn_list:
-        conn.close()
+    db.change_auto_bl(conn2)
     return
