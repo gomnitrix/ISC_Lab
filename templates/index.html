@@ -6,8 +6,15 @@
 	{% load staticfiles %}
 	<link rel="stylesheet" href="{% static 'dist/amazeui.min.css' %}">
 	<link rel="stylesheet" href="{% static 'demo.css' %}">
-	<script
-		type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+	<script type="application/x-javascript"> addEventListener("load", function() { 
+			var storage=window.sessionStorage;
+			flag=storage.flag;
+			if_home = storage.home;
+			window.alert(flag);
+			if (if_home==1 && flag==1){
+				start();
+			}
+			setTimeout(hideURLbar, 0);}, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 	<!-- Bootstrap Core CSS -->
 	<link href="{% static 'css/bootstrap.css' %}" rel='stylesheet' type='text/css'>
 	<!-- Custom CSS -->
@@ -17,11 +24,11 @@
 	<link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
 	<!-- //font-awesome icons -->
 	<!--skycons-icons-->
+	<script src="{% static 'dist/jquery.min.js' %}"></script>
 	<script src="{% static 'js/skycons.js' %}"></script>
 	<!--//skycons-icons-->
 
 	<!-- js-->
-	<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
 	<script src="{% static 'js/bootstrap.js' %}"></script>
 	<script src="{% static 'js/modernizr.custom.js' %}"></script>
 	<!-- Metis Menu -->
@@ -56,7 +63,8 @@
 		window.iqy = [0, 0, 0, 0, 0, 0];
 		window.tdr = [0, 0, 0, 0, 0, 0];
 		window.we = [0, 0, 0, 0, 0, 0];
-
+		window.setting_host = "{% url 'setting' %}";
+		window.home_host = "{% url 'html' %}";
 	</script>
 	<script src="{% static 'js/sidebar.js' %}"></script>
 </head>
@@ -71,14 +79,15 @@
 					<div class="scrollbar scrollbar1" tabindex="5000" style="overflow: hidden; outline: none;">
 						<ul class="nav in" id="side-menu">
 							<li>
-								<a href="{% url 'html' %}" class="active"><i class="fa fa-home nav_icon"></i>
+								<a class="active Operation" onclick="store2()"><i
+										class="fa fa-home nav_icon"></i>
 									<figure class="icons">Home
 										<canvas id="clear-day" width="15" height="15"></canvas>
 									</figure>
 								</a>
 							</li>
 							<li>
-								<a href="{% url 'setting' %}"><i class="fa fa-cogs nav_icon"></i>Setting</a>
+								<a class="Operation" onclick="store()"><i class="fa fa-cogs nav_icon"></i>Setting</a>
 							</li>
 							<li>
 								<a class="Operation" onclick="start()"><i
@@ -318,7 +327,6 @@
 			<p>Copyright © 2019.ICS Lab, All rights reserved. Author:高博为 </p>
 		</div>
 	</div>
-	<script src="{% static 'dist/jquery.min.js' %}"></script>
 	<script src="{% static 'dist/amazeui.min.js' %}"></script>
 	<script src="{% static 'dist/echarts.min.js' %}"></script>
 	<script src="{% static 'dist/t3.min.js' %}"></script>

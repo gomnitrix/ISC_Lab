@@ -40,7 +40,7 @@ class TDBHelper:
     def write_data(self, name, data, label, conn):
         cursor = None
         try:
-            sql = "insert into app_datas (data_name,data,label) values (%s, %s)"
+            sql = "insert into app_datas (data_name,data,label) values (%s, %s, %s)"
             cursor, num = self.execute(sql, args=(name, data, label), conn=conn)
         except Exception as e:
             conn.rollback()
@@ -50,7 +50,7 @@ class TDBHelper:
             TDBHelper.close(cursor=cursor)
 
     def read_data(self, name, conn):
-        sql = "select data from app_datas where data_name = '{}'".format(name)
+        sql = "select data,label from app_datas where data_name = '{}'".format(name)
         cursor = None
         try:
             cursor, num = self.execute(sql, conn=conn)
@@ -63,10 +63,10 @@ class TDBHelper:
             raise Exception("read failed!")
         finally:
             TDBHelper.close(cursor=cursor)
-        return data,label
+        return data, label
 
     def get_files(self, conn):
-        sql = "select data_name from training_data"
+        sql = "select data_name from app_datas"
         cursor = None
         try:
             cursor, num = self.execute(sql, conn)

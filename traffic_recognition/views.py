@@ -1,7 +1,7 @@
-from django.shortcuts import render
 from django.http import JsonResponse
+from django.shortcuts import render
+
 from identify.main import *
-from utils.DbHelper import *
 
 
 # Create your views here.

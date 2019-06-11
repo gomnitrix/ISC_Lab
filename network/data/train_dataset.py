@@ -13,7 +13,7 @@ def pretreatment(classes=None):
     conn = helper.get_con()
     for cls in classes:
         with PcapReader(cls) as reader:
-            idx = 18000
+            idx = 1
             file_prefix = str(cls).split("/")[-1].split(".")[0] + "_"
             label = file_prefix.strip('_')
             for item in reader:
@@ -40,12 +40,12 @@ def pretreatment(classes=None):
                     name = file_prefix + str(idx)
                     helper.write_data(name, formed_array.tostring(), label, conn)
                     idx += 1
-                if idx >= 23000:
+                if idx >= 18000:
                     break
 
 
 if __name__ == '__main__':
-    pretreatment(["./raw/app/Thunder.pcapng"])
+    pretreatment(["./raw/app/QQ.pcapng"])
     h = Db()
     conn = h.get_con(False)
     files = h.get_files(conn)

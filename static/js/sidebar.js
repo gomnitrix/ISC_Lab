@@ -48,7 +48,8 @@ function get_total() {
 
         success: function (result) { //获取后台处理后传过来的result
             total = result.num;
-
+            var element = document.getElementById("total");
+            element.innerHTML=total;
         },
 
     });
@@ -61,7 +62,8 @@ function get_rst() {
 
         success: function (result) { //获取后台处理后传过来的result
             reset = result.num;
-
+            var element = document.getElementById("rst");
+            element.innerHTML=reset;
         },
 
     });
@@ -74,7 +76,8 @@ function get_riskflow() {
 
         success: function (result) { //获取后台处理后传过来的result
             rf = result.num;
-
+            var element = document.getElementById("rf");
+            element.innerHTML=rf;
         },
 
     });
@@ -135,8 +138,6 @@ function dtl() {
 
                 }
             }
-            console.log(rkf_dtl)
-
         },
 
     });
@@ -146,72 +147,59 @@ function dtl() {
 }
 
 function change() {
-
-    qq[0] = qq[1]
-    qq[1] = qq[2]
-    qq[2] = qq[3]
-    qq[3] = qq[4]
-    qq[4] = qq[5]
-    qq[5] = app_num2[0]
-
-    wc[0] = wc[1]
-    wc[1] = wc[2]
-    wc[2] = wc[3]
-    wc[3] = wc[4]
-    wc[4] = wc[5]
-    wc[5] = app_num2[1]
-
-    iqy[0] = iqy[1]
-    iqy[1] = iqy[2]
-    iqy[2] = iqy[3]
-    iqy[3] = iqy[4]
-    iqy[4] = iqy[5]
-    iqy[5] = app_num2[2]
-
-    tdr[0] = tdr[1]
-    tdr[1] = tdr[2]
-    tdr[2] = tdr[3]
-    tdr[3] = tdr[4]
-    tdr[4] = tdr[5]
-    tdr[5] = app_num2[3]
-
-    we[0] = we[1]
-    we[1] = we[2]
-    we[2] = we[3]
-    we[3] = we[4]
-    we[4] = we[5]
-    we[5] = app_num2[4]
+    qq = qq.slice(1)
+    qq.push(app_num2[0])
+    wc = wc.slice(1)
+    wc.push(app_num2[1])
+    iqy = iqy.slice(1)
+    iqy.push(app_num2[2])
+    tdr = tdr.slice(1)
+    tdr.push(app_num2[3])
+    we = we.slice(1)
+    we.push(app_num2[4])
 
     var time = new Date();
     var h = time.getHours();
     var m = time.getMinutes();
     var s = time.getSeconds();
     var T = h + ":" + m + ":" + s;
-    times[0] = times[1]
-    times[1] = times[2]
-    times[2] = times[3]
-    times[3] = times[4]
-    times[4] = times[5]
-    times[5] = T
-
+    times = times.slice(1)
+    times.push(T)
 
 }
+
+function store(){
+    var storage = window.sessionStorage;
+    storage['flag'] = flag;
+    window.location.href = window.setting_host;
+}
+
+function store2(){
+    var storage = window.sessionStorage;
+    storage['flag'] = flag;
+    storage['home'] = 1;
+    window.location.href = window.home_host;
+}
+
 function start() {
-    window.alert("start running");
+    if (flag == 0 || flag == 2) {
+        window.alert("start running");
+    }
+    
+    flag = 1;
     $.ajax({
         type: "GET",
         url: "./start", //后台处理函数的url
 
         success: function (result) { //获取后台处理后传过来的result
             data = result.info;
-            flag = 1;
         },
     });
 
     t1 = setInterval(function () {
         get_data();
         get_total();
-        counterTotal();
+        // counterTotal();
         get_riskflow();
         // counterRf();
         get_rst();
@@ -238,39 +226,55 @@ function stop() {
 }
 
 
+// function counterTotal() {
+//     var element = document.getElementById("total");
+//     step = 1
+//     var element2 = document.getElementById("rf");
+//     step2 = Math.round((rf - element2.value) / 20)
+//     var element3 = document.getElementById("rst");
+//     step3 = Math.round((reset - element3.value) / 20)
+//     setInterval(function () {
+//         val = element.value;
+//         val = val + step
+//         if (val < total) {
+//             element.innerHTML = val;
+//         } else {
+//             element.innerHTML = total;
+//             val2 = element2.value;
+//             val2 = val2 + step2
+//             if (val2 < rf) {
+//                 element2.innerHTML = val2;
+//             } else {
+//                 element2.innerHTML = rf;
+//                 val3 = element3.value;
+//                 val3 = val3 + step3
+//                 if (val3 < reset) {
+//                     element3.innerHTML = val3;
+//                 } else {
+//                     element3.innerHTML = reset;
+//                     clearInterval();
+//                 }
+//             }
+//         }
+//     }, 15);
+// }
+
+
 function counterTotal() {
     var element = document.getElementById("total");
-    step = Math.round((total - element.value) / 20)
-    var element2 = document.getElementById("rf");
-    step2 = Math.round((rf - element2.value) / 20)
-    var element3 = document.getElementById("rst");
-    step3 = Math.round((reset - element3.value) / 20)
+    step = 1;
+    end = total;
     setInterval(function () {
         val = element.value;
         val = val + step
-        if (val < total) {
+        if (val < end) {
             element.innerHTML = val;
         } else {
-            element.innerHTML = total;
-            val2 = element2.value;
-            val2 = val2 + step2
-            if (val2 < rf) {
-                element2.innerHTML = val2;
-            } else {
-                element2.innerHTML = rf;
-                val3 = element3.value;
-                val3 = val3 + step3
-                if (val3 < reset) {
-                    element3.innerHTML = val3;
-                } else {
-                    element3.innerHTML = reset;
-                    clearInterval();
-                }
-            }
+            element.innerHTML = end;
+            clearInterval();
         }
-    }, 15);
+    }, 30);
 }
-
 function counterRf() {
     var element = document.getElementById("rf");
     step = Math.round((rf - element.value) / 20)

@@ -17,15 +17,15 @@ class EncIdentNet(BasicModel):
             nn.MaxPool2d(kernel_size=2, stride=2),
             nn.Conv2d(64, 128, kernel_size=3, stride=1),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.1),
+            nn.Dropout(0.0001),
         )
         self.classifier = nn.Sequential(
             nn.Linear(2048, 128),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.15),
+            nn.Dropout(0.0001),
             nn.Linear(128, 128),
             nn.ReLU(inplace=True),
-            nn.Dropout(0.25),
+            nn.Dropout(0.1),
             nn.Linear(128, num_classes),
         )
 

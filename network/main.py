@@ -162,6 +162,6 @@ def myhelp():
 
 
 if __name__ == '__main__':
-    fire.Fire()
-    # train(lr=0.05, batch_size=64, max_epoch=15,
-    #       print_freq=10, model="IdentNet", load_model_path=opt.net1_model)
+    # fire.Fire()
+    train(lr=0.005, batch_size=64, max_epoch=2,
+          print_freq=10, model="EncIdentNet", load_model_path=opt.model_file+"EncIdentNet_0610_22_58_08.pth")
