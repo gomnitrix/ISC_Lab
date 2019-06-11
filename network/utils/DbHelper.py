@@ -1,6 +1,6 @@
 import pymysql
 import threading
-
+import time
 __metaclass__ = type
 
 
@@ -40,8 +40,8 @@ class DBHelper:
         try:
             cursor = conn.cursor()  # (pymysql.cursors.DictCursor)
             num = cursor.execute(sql, args)
-        except :
-           print("insert double")
+        except Exception:
+           raise ("insert double")
            return 0,0
         return cursor, num
 
@@ -62,7 +62,7 @@ class DBHelper:
             if cursor==0:
                 return
         except :
-            conn.rollback()
+           # conn.rollback()
             print("insert double")
 
         finally:
@@ -75,7 +75,7 @@ class DBHelper:
             sql = "insert into traffic_recognition_black_list(ip) values (%s)"
             cursor, num = self.execute(sql, args=(ip), conn=conn)
         except Exception as e:
-            conn.rollback()
+           # conn.rollback()
             raise Exception("insert failed!")
 
 
@@ -83,6 +83,46 @@ class DBHelper:
             conn.commit()
 
             DBHelper.close(conn=None, cursor=cursor)
+    def write_ft(self, conn, filter):
+
+        cursor = None,
+        try:
+            sql = "insert into traffic_recognition_filter(str,Date) values (%s,current_date())"
+            cursor, num = self.execute(sql, args=(filter), conn=conn)
+        except Exception as e:
+           # conn.rollback()
+            raise Exception("insert failed!")
+
+
+        finally:
+            conn.commit()
+            DBHelper.close(conn=None, cursor=cursor)
+    def delete_ft(self, conn, filter):
+        cursor = None,
+        try:
+
+            sql = "delete from traffic_recognition_filter where str =" +"'"+str(filter)+"'"
+            cursor, num = self.execute(sql, conn=conn)
+        except Exception as e:
+           # conn.rollback()
+            raise Exception("delete failed!")
+        finally:
+            conn.commit()
+            DBHelper.close(conn=None, cursor=cursor)
+
+    def read_ft(self,conn):
+        
+        sql = "select str,Date from traffic_recognition_filter"
+        cursor = None
+        try:
+            cursor, num = self.execute(sql, conn=conn)
+            values = cursor.fetchall()
+        except Exception as e:
+            raise Exception("read failed!")
+        finally:
+            DBHelper.close(conn, cursor=cursor)
+        return values
+
 
     def delete_all(self, conn):
 
@@ -91,7 +131,7 @@ class DBHelper:
             sql = "delete from traffic_recognition_high_risk_traffic"
             cursor, num = self.execute(sql, conn=conn)
         except Exception as e:
-            conn.rollback()
+          #  conn.rollback()
             raise Exception("delete failed!")
         finally:
             conn.commit()
@@ -103,7 +143,7 @@ class DBHelper:
             sql = "delete from traffic_recognition_black_list"
             cursor, num = self.execute(sql, conn=conn)
         except Exception as e:
-            conn.rollback()
+          #  conn.rollback()
             raise Exception("delete failed!")
         finally:
             conn.commit()
@@ -132,6 +172,7 @@ class DBHelper:
         except Exception as e:
             raise Exception("read failed!")
         finally:
+            conn.commit()
             DBHelper.close(conn, cursor=cursor)
         return values
 
@@ -142,7 +183,7 @@ class DBHelper:
             sql = "alter table  traffic_recognition_high_risk_traffic auto_increment=1"
             cursor, num = self.execute(sql, conn=conn)
         except Exception as e:
-            conn.rollback()
+          #  conn.rollback()
             raise Exception("change_auto failed")
         finally:
             conn.commit()
@@ -155,7 +196,7 @@ class DBHelper:
             sql = "alter table  traffic_recognition_black_list auto_increment=1"
             cursor, num = self.execute(sql, conn=conn)
         except Exception as e:
-            conn.rollback()
+          #  conn.rollback()
             raise Exception("change_auto failed")
         finally:
             conn.commit()
@@ -181,6 +222,13 @@ def theard_write_bl(ip):
    t.start()
    return
 
+def write_ft(ft):
+    conn = DBHelper.get_con()
+    db.write_ft(conn,ft)
+
+def read_ft():
+    conn = DBHelper.get_con()
+    return db.read_ft(conn)
 
 def read(id):
     conn = DBHelper.get_con()
@@ -203,7 +251,9 @@ def delete():
     db.delete_all(conn)
     db.delete_bl(conn2)
     return
-
+def delete_flt(ft):
+    conn = DBHelper.get_con()
+    db.delete_ft(conn,ft)
 
 def set_auto():
     conn = DBHelper.get_con()
@@ -212,3 +262,7 @@ def set_auto():
     db.change_auto(conn)
     db.change_auto_bl(conn2)
     return
+
+
+if __name__ == '__main__':
+    delete_flt("tt")

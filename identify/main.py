@@ -67,6 +67,11 @@ def get_riskflow_retail():
     if length > 0:
         id[0] = values[length - 1]['id']
     return values
+
+def get_filter():
+    values = read_ft()
+    return values
+
 def iptable_enable():
     enable()
 

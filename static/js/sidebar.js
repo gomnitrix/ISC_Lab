@@ -53,6 +53,21 @@ function get_total() {
 
     });
 }
+
+function get_block()
+{
+$.ajax({
+        type: "GET",
+        url: "./block", //后台处理函数的url
+
+
+        success: function (result) { //获取后台处理后传过来的result
+            block = result.num;
+
+        },
+
+    });
+}
 function get_rst() {
     $.ajax({
         type: "GET",
@@ -109,6 +124,21 @@ function AddTableRow(proto, src_ip, dst_ip, sport, dport) {
     b.innerHTML = sport;
     c.innerHTML = dport;
 }
+function AddTable2Row(id,str,data) {
+
+    var tab = document.getElementById('tab2')
+    var len = tab.rows.length;//获取表格的行数
+    var x = tab.insertRow(len);
+    var y = x.insertCell(0);
+    var z = x.insertCell(1);
+    var a = x.insertCell(2);
+
+    y.innerHTML = id;
+    z.innerHTML = str;
+    a.innerHTML = data;
+
+}
+
 function dtl() {
     $.ajax({
         type: "GET",
@@ -135,7 +165,7 @@ function dtl() {
 
                 }
             }
-            console.log(rkf_dtl)
+
 
         },
 
@@ -196,6 +226,8 @@ function change() {
 
 
 }
+
+
 function start() {
     window.alert("start running");
     $.ajax({
@@ -214,10 +246,12 @@ function start() {
         counterTotal();
         get_riskflow();
         // counterRf();
+        get_block();
         get_rst();
         // counterReset();
         get_app();
         change();
+
         dtl();
     }, interval);
 }
@@ -240,11 +274,17 @@ function stop() {
 
 function counterTotal() {
     var element = document.getElementById("total");
-    step = Math.round((total - element.value) / 20)
+   // step = Math.round((total - element.value) / 20)
     var element2 = document.getElementById("rf");
-    step2 = Math.round((rf - element2.value) / 20)
+   // step2 = Math.round((rf - element2.value) / 20)
     var element3 = document.getElementById("rst");
-    step3 = Math.round((reset - element3.value) / 20)
+   // step3 = Math.round((reset - element3.value) / 20)
+     var element4 = document.getElementById("block");
+    //step4 = Math.round((block - element4.value) / 20)
+    step =1
+    step2 = 1
+    step3 = 1
+    step4 = 1
     setInterval(function () {
         val = element.value;
         val = val + step
@@ -264,11 +304,19 @@ function counterTotal() {
                     element3.innerHTML = val3;
                 } else {
                     element3.innerHTML = reset;
-                    clearInterval();
-                }
-            }
-        }
-    }, 15);
+                    val4 = element4.value;
+                    val4 = val4 + step4
+                    if (val4 < block) {
+                        element4.innerHTML = val4;
+                    } else {
+                        element4.innerHTML = block;
+
+                        clearInterval();
+                    }
+                            }
+                        }
+                    }
+                }, 15);
 }
 
 function counterRf() {
@@ -301,3 +349,46 @@ function counterReset() {
         }
     }, 30);
 }
+
+function submit()
+  {
+
+  var filter = document.getElementById("ipt").value
+       $.ajax({
+        type: "GET",
+        url: "./submit/?ft="+filter, //后台处理函数的url
+
+        success: function (result) { //获取后台处理后传过来的result
+            data = result.data;
+                var tab = document.getElementById('tab2')
+                var l = tab.rows.length;//获取表格的行数
+                var x = tab.insertRow(l);
+                var y = x.insertCell(0);
+                var z = x.insertCell(1);
+                var a = x.insertCell(2);
+                var time = new Date();
+                var yr = time.getFullYear();
+                var mth = time.getMonth()+1;
+                var dy = time.getDate();
+                var T = 'June' + " " + dy + "," +yr;
+                y.innerHTML = l;
+                z.innerHTML = filter;
+                a.innerHTML = T;
+
+        },
+    });
+ }
+
+ function dlt()
+ {
+    var filter = document.getElementById("ipt").value
+    $.ajax({
+        type: "GET",
+        url: "./delete/?ft="+filter, //后台处理函数的url
+
+        success: function (result) { //获取后台处理后传过来的result
+        values = result.data
+          location.reload()
+        },
+    });
+ }

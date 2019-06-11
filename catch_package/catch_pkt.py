@@ -56,12 +56,13 @@ def packet_load(package):
         if len(load) > 0:
 
             length = len(FLT)
-            if length!=0 and load.__contains__(FLT[0]):
+            print(FLT)
+            if length!=0 and load.__contains__(FLT[length-1]):
                 FLT_result.append(proto,src,dst,sport,dport)
-                if  "172" in src:
-                    deny_ip(dst)
-                else:
-                    deny_ip(src)
+                # if  "172" in src:
+                #     deny_ip(dst)
+                # else:
+                #     deny_ip(src)
             int_ = [int(x) for x in bytes(load)]
             if len(int_) < 1024:
                 int_.extend([0] * (1024 - len(int_)))

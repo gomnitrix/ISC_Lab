@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from identify.main import *
+from catch_package.catch_pkt import FLT
 from utils.DbHelper import *
 
 # Create your views here.
 def get_setting(request):
-    return render(request, "inputs.html", locals())
-
+    values = get_filter()
+    print(values)
+    return render(request, "inputs.html",{"outs":values},locals())
 
 def get_html(request):
     DbHelper.delete()
@@ -28,6 +30,7 @@ def stop(request):
     return JsonResponse(data)
 
 
+
 def proto_num(reguest):
     data = list(get_proto_static().values())
     nums = {"data": data[0:6]}
@@ -45,7 +48,7 @@ def get_riskflow(request):
 
 
 def get_block(request):
-    data = {"num": get_block()}
+    data = {"num": get_block_num()}
     return JsonResponse(data)
 
 
@@ -58,6 +61,23 @@ def app_num(request):
     data = list(get_app_num().values())
     nums = {"num": data[0:6]}
     return JsonResponse(nums)
+
+def filter(request):
+    ft = request.GET.get("ft")
+    FLT.append(ft)
+    write_ft(ft)
+    data = {}
+    data["data"] = "s"
+    return JsonResponse(data)
+
+
+def filter_delete(request):
+    ft = request.GET.get("ft")
+    delete_flt(ft)
+    data = {}
+    data["data"] = "s"
+    print(data["data"])
+    return JsonResponse(data)
 
 
 def riskflow_dtl(request):
