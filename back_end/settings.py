@@ -69,26 +69,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'back_end.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE' : 'django.db.backends.mysql',
-        'NAME': 'lsc_lab',
-        'USER':  'root',
-        'PASSWORD': '1026Lijing-=',
-        'HOST':'localhost',
-        'PORT':'3306',
-    }
-}
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ICS_Lab',
-#         'USER': '1160300103',
-#         'PASSWORD': '19981017',
-#         'HOST': 'localhost',
-#         'PORT': '3306',
+#         'ENGINE' : 'django.db.backends.mysql',
+#         'NAME': 'lsc_lab',
+#         'USER':  'root',
+#         'PASSWORD': '1026Lijing-=',
+#         'HOST':'localhost',
+#         'PORT':'3306',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ICS_Lab',
+        'USER': '1160300103',
+        'PASSWORD': '19981017',
+        'HOST': 'localhost',
+        'PORT': '3306',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

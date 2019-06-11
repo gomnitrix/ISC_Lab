@@ -212,6 +212,19 @@ function store2(){
     window.location.href = window.home_host;
 }
 
+function tostop() {
+    window.alert("stop running");
+    clearInterval(t1)
+    flag = 2;
+    $.ajax({
+        type: "GET",
+        url: "./stop", //后台处理函数的url
+        success: function (result) { //获取后台处理后传过来的result
+            data = result.info;
+        },
+    });
+}
+
 function start() {
     if (flag == 0 || flag == 2) {
         window.alert("start running");
@@ -235,25 +248,10 @@ function start() {
         get_rst();
         get_app();
         change();
-
         dtl();
     }, interval);
 }
 
-
-function stop() {
-    window.alert("stop running");
-    clearInterval(t1)
-    flag = 2;
-    $.ajax({
-        type: "GET",
-        url: "./stop", //后台处理函数的url
-
-        success: function (result) { //获取后台处理后传过来的result
-            data = result.info;
-        },
-    });
-}
 
 
 

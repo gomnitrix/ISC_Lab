@@ -7,25 +7,25 @@ __metaclass__ = type
 class DBHelper:
     @staticmethod
     def get_con(if_dict=True):
-        config = {
-            'host': 'localhost',
-            'port': 3306,
-            'user': 'root',
-            'password': '1026Lijing-=',
-            'db': 'lsc_lab',
-            'charset': 'utf8',
-            'cursorclass': pymysql.cursors.DictCursor,
-        }
-
         # config = {
         #     'host': 'localhost',
         #     'port': 3306,
-        #     'user': '1160300103',
-        #     'password': '19981017',
-        #     'db': 'ICS_Lab',
+        #     'user': 'root',
+        #     'password': '1026Lijing-=',
+        #     'db': 'lsc_lab',
         #     'charset': 'utf8',
         #     'cursorclass': pymysql.cursors.DictCursor,
         # }
+
+        config = {
+            'host': 'localhost',
+            'port': 3306,
+            'user': '1160300103',
+            'password': '19981017',
+            'db': 'ICS_Lab',
+            'charset': 'utf8',
+            'cursorclass': pymysql.cursors.DictCursor,
+        }
         if not if_dict:
             config['cursorclass'] = pymysql.cursors.Cursor
 
