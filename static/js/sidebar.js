@@ -54,6 +54,22 @@ function get_total() {
 
     });
 }
+
+function get_block()
+{
+$.ajax({
+        type: "GET",
+        url: "./block", //后台处理函数的url
+
+
+        success: function (result) { //获取后台处理后传过来的result
+            block = result.num;
+            var element = document.getElementById("block");
+            element.innerHTML=block;
+        },
+
+    });
+}
 function get_rst() {
     $.ajax({
         type: "GET",
@@ -112,6 +128,21 @@ function AddTableRow(proto, src_ip, dst_ip, sport, dport) {
     b.innerHTML = sport;
     c.innerHTML = dport;
 }
+function AddTable2Row(id,str,data) {
+
+    var tab = document.getElementById('tab2')
+    var len = tab.rows.length;//获取表格的行数
+    var x = tab.insertRow(len);
+    var y = x.insertCell(0);
+    var z = x.insertCell(1);
+    var a = x.insertCell(2);
+
+    y.innerHTML = id;
+    z.innerHTML = str;
+    a.innerHTML = data;
+
+}
+
 function dtl() {
     $.ajax({
         type: "GET",
@@ -199,13 +230,12 @@ function start() {
     t1 = setInterval(function () {
         get_data();
         get_total();
-        // counterTotal();
         get_riskflow();
-        // counterRf();
+        get_block();
         get_rst();
-        // counterReset();
         get_app();
         change();
+
         dtl();
     }, interval);
 }
@@ -226,55 +256,9 @@ function stop() {
 }
 
 
-// function counterTotal() {
-//     var element = document.getElementById("total");
-//     step = 1
-//     var element2 = document.getElementById("rf");
-//     step2 = Math.round((rf - element2.value) / 20)
-//     var element3 = document.getElementById("rst");
-//     step3 = Math.round((reset - element3.value) / 20)
-//     setInterval(function () {
-//         val = element.value;
-//         val = val + step
-//         if (val < total) {
-//             element.innerHTML = val;
-//         } else {
-//             element.innerHTML = total;
-//             val2 = element2.value;
-//             val2 = val2 + step2
-//             if (val2 < rf) {
-//                 element2.innerHTML = val2;
-//             } else {
-//                 element2.innerHTML = rf;
-//                 val3 = element3.value;
-//                 val3 = val3 + step3
-//                 if (val3 < reset) {
-//                     element3.innerHTML = val3;
-//                 } else {
-//                     element3.innerHTML = reset;
-//                     clearInterval();
-//                 }
-//             }
-//         }
-//     }, 15);
-// }
 
 
-function counterTotal() {
-    var element = document.getElementById("total");
-    step = 1;
-    end = total;
-    setInterval(function () {
-        val = element.value;
-        val = val + step
-        if (val < end) {
-            element.innerHTML = val;
-        } else {
-            element.innerHTML = end;
-            clearInterval();
-        }
-    }, 30);
-}
+
 function counterRf() {
     var element = document.getElementById("rf");
     step = Math.round((rf - element.value) / 20)
@@ -285,6 +269,7 @@ function counterRf() {
             element.innerHTML = val;
         } else {
             element.innerHTML = rf;
+
             clearInterval();
         }
     }, 30);
@@ -304,3 +289,46 @@ function counterReset() {
         }
     }, 30);
 }
+
+function submit()
+  {
+
+  var filter = document.getElementById("ipt").value
+       $.ajax({
+        type: "GET",
+        url: "./submit/?ft="+filter, //后台处理函数的url
+
+        success: function (result) { //获取后台处理后传过来的result
+            data = result.data;
+                var tab = document.getElementById('tab2')
+                var l = tab.rows.length;//获取表格的行数
+                var x = tab.insertRow(l);
+                var y = x.insertCell(0);
+                var z = x.insertCell(1);
+                var a = x.insertCell(2);
+                var time = new Date();
+                var yr = time.getFullYear();
+                var mth = time.getMonth()+1;
+                var dy = time.getDate();
+                var T = 'June' + " " + dy + "," +yr;
+                y.innerHTML = l;
+                z.innerHTML = filter;
+                a.innerHTML = T;
+
+        },
+    });
+ }
+
+ function dlt()
+ {
+    var filter = document.getElementById("ipt").value
+    $.ajax({
+        type: "GET",
+        url: "./delete/?ft="+filter, //后台处理函数的url
+
+        success: function (result) { //获取后台处理后传过来的result
+        values = result.data
+          location.reload()
+        },
+    });
+ }

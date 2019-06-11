@@ -1,6 +1,7 @@
 from catch_package.catch_pkt import catch_packet,handle_packages
 from catch_package.catch_pkt import packet_Queue
 from catch_package.send_rst import *
+from catch_package.setiptable import *
 from network.config import DefaultConfig, opt
 from network.main import test
 from network.utils import DbHelper
@@ -10,7 +11,7 @@ proto_static = {"ssl": 0, "ssh": 0, "http": 0, "dns": 0, "ftp": 0, "mysql": 0, "
 
 app_static = {"QQ": 0, "WeChat": 0, "iqy": 0, "Thunder": 0, "NetEase": 0,"unknown": 0 }
 riskflow = [0]
-
+block = [0]
 
 class BasicThread(threading.Thread):
     def __init__(self):
@@ -99,6 +100,12 @@ class StaticThread(BasicThread):
                     riskflow[0] = riskflow[0] + 1
                     if pkt[0] == 6:
                         theard_send_rst(pkt)
+                    else:
+                        block[0] = block[0] + 1
+                        # if "172" in pkt[1]:
+                        #     deny_ip(pkt[2])
+                        # else:
+                        #     deny_ip(pkt[1])
                     DbHelper.theard_write(proto=pkt[0],src_ip=pkt[1],dst_ip=pkt[2],sport=int(pkt[3]),dport = int(pkt[4]))
 
 

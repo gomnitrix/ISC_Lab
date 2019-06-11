@@ -8,3 +8,12 @@ class High_risk_traffic(models.Model):
         dst_ip = models.CharField(max_length=15)
         sport = models.CharField(max_length=10)
         dport = models.CharField(max_length=10)
+
+class black_list(models.Model):
+        id = models.IntegerField(primary_key=True)
+        ip = models.CharField(max_length=15)
+
+class filter(models.Model):
+        id = models.IntegerField(primary_key=True)
+        str = models.CharField(max_length=50)
+        Date = models.DateField()

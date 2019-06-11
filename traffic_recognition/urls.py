@@ -13,4 +13,7 @@ urlpatterns = [
     url(r'get_rst_num', views.get_rst, name='rst_num'),
     url(r'dtl', views.riskflow_dtl, name='riskflow_dtl'),
     url(r'setting', views.get_setting, name='setting'),
+    url(r'submit', views.filter, name='submit'),
+    url(r'delete', views.filter_delete, name='delete'),
+    url(r'block', views.get_block, name='block'),
 ]

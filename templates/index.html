@@ -48,11 +48,11 @@
 		var T = h + ":" + m + ":" + s;
 
 		window.data = [0, 0, 0, 0, 0, 0];
-		window.interval = 4000;
+		window.interval = 3000;
 		window.flag = 0;
 		window.total = 0;
 		window.rf = 0;
-		window.blocked = 0;
+		window.block = 0;
 		window.reset = 0;
 		window.rkf_dtl = []
 		window.times = [T, T, T, T, T, T];
@@ -183,7 +183,7 @@
 							</div>
 							<div class="four-text">
 								<h3>Blocked</h3>
-								<h4 id="block">9</h4><!-- 这里传变量-->
+								<h4 id="block">0</h4><!-- 这里传变量-->
 								<!--<script>
 									var element4 = document.getElementById("block");
 									counter(element4,block);
