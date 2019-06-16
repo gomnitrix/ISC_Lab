@@ -5,11 +5,13 @@ from identify.main import *
 from catch_package.catch_pkt import FLT
 from utils.DbHelper import *
 
+
 # Create your views here.
 def get_setting(request):
     values = get_filter()
     print(values)
-    return render(request, "inputs.html",{"outs":values},locals())
+    return render(request, "inputs.html", {"outs": values}, locals())
+
 
 def get_html(request):
     DbHelper.delete()
@@ -18,7 +20,7 @@ def get_html(request):
 
 
 def start(request):
-    #iptable_enable()
+    # iptable_enable()
     ident.message_share()
     data = {"info": "start success"}
     return JsonResponse(data)
@@ -26,10 +28,9 @@ def start(request):
 
 def stop(request):
     ident.stop()
-    #iptable_reset()
+    # iptable_reset()
     data = {"info": "stop success"}
     return JsonResponse(data)
-
 
 
 def proto_num(reguest):
@@ -62,6 +63,7 @@ def app_num(request):
     data = list(get_app_num().values())
     nums = {"num": data[0:6]}
     return JsonResponse(nums)
+
 
 def filter(request):
     ft = request.GET.get("ft")

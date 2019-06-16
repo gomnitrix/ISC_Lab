@@ -45,12 +45,12 @@ def pretreatment(classes=None):
 
 
 if __name__ == '__main__':
-    pretreatment(["./raw/app/QQ.pcapng"])
+    # pretreatment(["./raw/app/QQ.pcapng"])
     h = Db()
     conn = h.get_con(False)
     files = h.get_files(conn)
     print(len(files))
-    data = h.read_data(files[0][0], conn)
-    conn.close()
-    print(data)
-    print(data[0].shape)
+    # data = h.read_data(files[0][0], conn)
+    # conn.close()
+    # print(data)
+    # print(data[0].shape)

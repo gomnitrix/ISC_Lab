@@ -4,8 +4,10 @@ from concurrent.futures import ThreadPoolExecutor
 import numpy as np
 import psutil
 from scapy.all import *
+
+from catch_package.setiptable import *
 from network.config import opt
-from catch_package.setiptable import  *
+
 net1_datas = queue.Queue()
 net2_datas = queue.Queue()
 packet_Queue = queue.Queue()
@@ -56,18 +58,16 @@ def packet_load(package):
         if len(load) > 0:
 
             length = len(FLT)
-            print(FLT)
-            if length!=0 and load.__contains__(FLT[length-1]):
-                FLT_result.append(proto,src,dst,sport,dport)
+            if length != 0 and load.__contains__(FLT[length - 1]):
+                FLT_result.append(proto, src, dst, sport, dport)
                 # if  "172" in src:
                 #     deny_ip(dst)
                 # else:
                 #     deny_ip(src)
-            int_ = [int(x) for x in bytes(load)]
-            if len(int_) < 1024:
-                int_.extend([0] * (1024 - len(int_)))
-            else:
-                int_ = int_[0:1024]
+            load = bytes(load)[:1024]
+            length = len(load)
+            int_ = [load[i] for i in range(length)]
+            int_.extend([0] * (1024 - length))
             img = np.array(int_, dtype='f').reshape((1, 32, 32))
             if img.any():
                 amin, amax = img.min(), img.max()
@@ -95,7 +95,3 @@ def handle_packages():
 def catch_packet(num):
     dev = get_netcard()
     sniff(iface=dev, prn=packet_load, count=num)
-
-
-if __name__ == '__main__':
-    catch_packet()
